@@ -1,0 +1,1 @@
+{"inspection_event_id": 7, "objective_source_event_ids": [2, 3, 4], "percept_ref": "local_percept:1", "record_type": "observation_provenance", "source_hydrology_tick_ref": "hydrology_tick:1", "source_process_refs": ["aqueous_echo_tick:1"], "source_state_hash": "3d1c6108159a5c4534629c61ed5b7762d2d5768b9c94c8767b186b8bc7903c8e"}

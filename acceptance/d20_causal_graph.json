@@ -1,0 +1,184 @@
+{
+  "edges": [
+    {
+      "kind": "project_context",
+      "source_ref": "project:nereid_return_underpeak",
+      "target_ref": "decision:1"
+    },
+    {
+      "kind": "decision_input",
+      "source_ref": "memory:nereid_01:native_underpeak_signature",
+      "target_ref": "decision:1"
+    },
+    {
+      "kind": "decision_input",
+      "source_ref": "memory:nereid_01:current_separation",
+      "target_ref": "decision:1"
+    },
+    {
+      "kind": "project_context",
+      "source_ref": "project:nereid_return_underpeak",
+      "target_ref": "decision:2"
+    },
+    {
+      "kind": "decision_input",
+      "source_ref": "memory:nereid_01:native_underpeak_signature",
+      "target_ref": "decision:2"
+    },
+    {
+      "kind": "decision_input",
+      "source_ref": "memory:nereid_01:current_separation",
+      "target_ref": "decision:2"
+    },
+    {
+      "kind": "decision_input",
+      "source_ref": "project_attempt:1",
+      "target_ref": "decision:2"
+    },
+    {
+      "kind": "decision_input",
+      "source_ref": "resolution:1",
+      "target_ref": "decision:2"
+    },
+    {
+      "kind": "project_context",
+      "source_ref": "project:nereid_return_underpeak",
+      "target_ref": "decision:3"
+    },
+    {
+      "kind": "decision_input",
+      "source_ref": "memory:nereid_01:native_underpeak_signature",
+      "target_ref": "decision:3"
+    },
+    {
+      "kind": "decision_input",
+      "source_ref": "memory:nereid_01:current_separation",
+      "target_ref": "decision:3"
+    },
+    {
+      "kind": "decision_input",
+      "source_ref": "project_attempt:1",
+      "target_ref": "decision:3"
+    },
+    {
+      "kind": "decision_input",
+      "source_ref": "resolution:1",
+      "target_ref": "decision:3"
+    },
+    {
+      "kind": "decision_input",
+      "source_ref": "project_attempt:2",
+      "target_ref": "decision:3"
+    },
+    {
+      "kind": "decision_input",
+      "source_ref": "resolution:2",
+      "target_ref": "decision:3"
+    },
+    {
+      "kind": "project_context",
+      "source_ref": "project:nereid_return_underpeak",
+      "target_ref": "decision:4"
+    },
+    {
+      "kind": "decision_input",
+      "source_ref": "memory:nereid_01:native_underpeak_signature",
+      "target_ref": "decision:4"
+    },
+    {
+      "kind": "decision_input",
+      "source_ref": "memory:nereid_01:current_separation",
+      "target_ref": "decision:4"
+    },
+    {
+      "kind": "decision_input",
+      "source_ref": "project_attempt:1",
+      "target_ref": "decision:4"
+    },
+    {
+      "kind": "decision_input",
+      "source_ref": "resolution:1",
+      "target_ref": "decision:4"
+    },
+    {
+      "kind": "decision_input",
+      "source_ref": "project_attempt:2",
+      "target_ref": "decision:4"
+    },
+    {
+      "kind": "decision_input",
+      "source_ref": "resolution:2",
+      "target_ref": "decision:4"
+    },
+    {
+      "kind": "decision_input",
+      "source_ref": "project_attempt:3",
+      "target_ref": "decision:4"
+    },
+    {
+      "kind": "decision_input",
+      "source_ref": "resolution:3",
+      "target_ref": "decision:4"
+    },
+    {
+      "kind": "authored_intent",
+      "source_ref": "decision:1",
+      "target_ref": "intent:1"
+    },
+    {
+      "kind": "authored_intent",
+      "source_ref": "decision:2",
+      "target_ref": "intent:2"
+    },
+    {
+      "kind": "authored_intent",
+      "source_ref": "decision:3",
+      "target_ref": "intent:3"
+    },
+    {
+      "kind": "authored_intent",
+      "source_ref": "decision:4",
+      "target_ref": "intent:4"
+    },
+    {
+      "kind": "action_resolution",
+      "source_ref": "intent:1",
+      "target_ref": "resolution:1"
+    },
+    {
+      "kind": "objective_result",
+      "source_ref": "resolution:1",
+      "target_ref": "event:1"
+    },
+    {
+      "kind": "action_resolution",
+      "source_ref": "intent:2",
+      "target_ref": "resolution:2"
+    },
+    {
+      "kind": "objective_result",
+      "source_ref": "resolution:2",
+      "target_ref": "event:2"
+    },
+    {
+      "kind": "action_resolution",
+      "source_ref": "intent:3",
+      "target_ref": "resolution:3"
+    },
+    {
+      "kind": "objective_result",
+      "source_ref": "resolution:3",
+      "target_ref": "event:3"
+    },
+    {
+      "kind": "action_resolution",
+      "source_ref": "intent:4",
+      "target_ref": "resolution:4"
+    },
+    {
+      "kind": "objective_result",
+      "source_ref": "resolution:4",
+      "target_ref": "event:4"
+    }
+  ]
+}

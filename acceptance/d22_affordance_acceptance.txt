@@ -1,0 +1,36 @@
+WORLD ZERO V0.0-D.2.2 — P4 PHYSICAL AFFORDANCES + LOCAL PERCEPTION ACCEPTANCE
+Lab policies are interface probes, not canonical Nereid or Trade cognition.
+Subjects receive private local percepts; authoritative Hydrology owns outcomes.
+
+  [LAW +] remote inspection is rejected without touching time or physics: outcome=rejected; minute=0
+  [LAW +] local inspection creates one private percept: percept=local_percept:1; owner=nereid_01
+  [LAW +] subjective gate view is qualitative and contains no hydrology answer key: cues=mechanism_condition,outflow_cue,visible_debris,visible_sluice
+  [LAW +] objective inspection event withholds the private percept payload: event=1; ledger_keys=inspection_type,percept_payload_withheld_from_ledger
+  [LAW +] lab Nereid acts only from its own SubjectiveWorldView: evidence=local_percept:1
+  [LAW +] lesser-entity silt influence is bounded and physically narrow: removed=0.0624; initial_sluice=0.000
+  [LAW +] silt influence cannot declare passage or move the sluice: sluice_after_silt=0.000; event=2
+  [LAW +] physical action does not manufacture a new observation: after_action=1; after_tick=1
+  [LAW +] a later local inspection can perceive a coarse physical change: before=moderate; after=light
+  [LAW +] one subject cannot cite another subject's private percept: outcome=rejected; state_unchanged=True
+  [LAW +] resources are enforced before time or state mutation: outcome=blocked; state_unchanged=True
+  [LAW +] Trade clears debris through the production physical resolver: event=5; current_debris=0.0580
+  [LAW +] ordinary sluice work can be partial rather than magic success: outcomes=partial,partial,succeeded
+  [LAW +] production actions are causally parented by owned observations: physical_events=5; parented=5
+  [LAW +] hydrology process traces retain physical action provenance: action_events_in_ticks=4
+  [LAW +] two authoritative hydrology ticks—not action prose—make the water route viable: route=True; transition_events=1
+  [LAW +] a viable route neither creates a quest nor moves Nereid automatically: forbidden_events=0; passage_attempts=0
+  [LAW +] physical consequence is not delivered until a new observation: before_observe=2; after_physics=2; after_observe=3
+  [LAW +] post-change water percept still exposes cues rather than route truth: felt_current=violent
+  [LAW +] Nereid's bounded silt action changes a later actor's real affordance: with_silt=0.2276; without_silt=0.2117
+  [LAW +] identical local action histories remain deterministic: final_hash=6731051874a040aa
+  [LAW +] bank reinforcement through the bridge changes the hidden physical outcome: reinforced_exposure=0.000; unreinforced_exposure=1.000
+  [LAW +] bank workers can protect a hidden site without learning that it exists: visible_cues=surface_signs,visible_stability
+  [LAW +] raw hydrology transitions remain guarded after P4: guarded_transitions=1
+  [LAW +] action durations advance the same fixed-clock world process: hydrology_ticks=6; process_runs=6
+  [LAW +] P4 never bypasses the objective Ledger for successful world-facing actions: actions=12; ledger_events=11
+
+LAWS: 26/26
+Local percepts: 5
+World-facing action traces: 12
+Hydrology ticks in focal run: 6
+Bank counterfactual exposure (reinforced/unreinforced): 0.000/1.000

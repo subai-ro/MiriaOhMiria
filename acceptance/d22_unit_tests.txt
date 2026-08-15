@@ -1,0 +1,8 @@
+WORLD ZERO V0.0-D.2.2 — COMPLETE OFFLINE UNIT SUITE
+
+Command:
+  py -m unittest discover -s tests -q
+
+Result:
+  Ran 119 tests
+  OK

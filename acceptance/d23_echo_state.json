@@ -1,0 +1,20 @@
+{
+  "band_states": {
+    "lake_mirror": "silent",
+    "lake_whisper": "silent",
+    "northwood_junction": "silent",
+    "underpeak_deep_river": "silent",
+    "underpeak_gallery_sump": "silent",
+    "underpeak_gate_forebay": "silent",
+    "underpeak_upper_reach": "silent"
+  },
+  "node_amounts": {
+    "lake_mirror": 0.0,
+    "lake_whisper": 0.0,
+    "northwood_junction": 0.0,
+    "underpeak_deep_river": 0.0,
+    "underpeak_gallery_sump": 0.0,
+    "underpeak_gate_forebay": 0.0,
+    "underpeak_upper_reach": 0.0
+  }
+}

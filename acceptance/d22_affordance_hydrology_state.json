@@ -1,0 +1,157 @@
+{
+  "aquatic_route_viable": true,
+  "aquatic_viable_streak": 2,
+  "burial_bank": {
+    "cover_depth_equiv": 0.39857681386,
+    "disturbance": 0.0,
+    "exposure_fraction": 0.0,
+    "last_change_event_id": null,
+    "object_id": "underpeak_burial_shelf",
+    "remains_displaced": false,
+    "sediment_mobility": 1.0
+  },
+  "edges": [
+    {
+      "capacity": 0.065,
+      "edge_id": "mirror_to_junction",
+      "head_scale": 0.75,
+      "source_id": "lake_mirror",
+      "target_id": "northwood_junction"
+    },
+    {
+      "capacity": 0.06,
+      "edge_id": "whisper_to_junction",
+      "head_scale": 0.75,
+      "source_id": "lake_whisper",
+      "target_id": "northwood_junction"
+    },
+    {
+      "capacity": 0.115,
+      "edge_id": "junction_to_forebay",
+      "head_scale": 0.65,
+      "source_id": "northwood_junction",
+      "target_id": "underpeak_gate_forebay"
+    },
+    {
+      "capacity": 0.14,
+      "edge_id": "upper_to_deep",
+      "head_scale": 0.7,
+      "source_id": "underpeak_upper_reach",
+      "target_id": "underpeak_deep_river"
+    }
+  ],
+  "gallery": {
+    "last_change_event_id": null,
+    "node_id": "underpeak_gallery_sump",
+    "route_state": "blocked_by_rubble",
+    "rubble_obstruction": 0.7
+  },
+  "gate": {
+    "debris_load": 0.058,
+    "effective_opening": 0.686354064175,
+    "last_change_event_id": 9,
+    "object_id": "underpeak_river_gate",
+    "sluice_position": 0.72288117216,
+    "structure_integrity": 0.82
+  },
+  "lake_band_states": {
+    "lake_mirror": "normal",
+    "lake_whisper": "normal"
+  },
+  "nodes": {
+    "lake_mirror": {
+      "base_head": 3.0,
+      "external_inflow": 0.034,
+      "head": 3.634021503177,
+      "level": 0.634021503177,
+      "node_id": "lake_mirror",
+      "storage": 0.760825803813,
+      "storage_capacity": 1.2,
+      "water_tags": [
+        "fresh",
+        "surface",
+        "silver_thread"
+      ]
+    },
+    "lake_whisper": {
+      "base_head": 2.9,
+      "external_inflow": 0.03,
+      "head": 3.58321966692,
+      "level": 0.68321966692,
+      "node_id": "lake_whisper",
+      "storage": 0.68321966692,
+      "storage_capacity": 1.0,
+      "water_tags": [
+        "fresh",
+        "surface",
+        "silver_thread"
+      ]
+    },
+    "northwood_junction": {
+      "base_head": 2.55,
+      "external_inflow": 0.0,
+      "head": 3.186678218485,
+      "level": 0.636678218485,
+      "node_id": "northwood_junction",
+      "storage": 0.350173020167,
+      "storage_capacity": 0.55,
+      "water_tags": [
+        "fresh",
+        "junction"
+      ]
+    },
+    "underpeak_deep_river": {
+      "base_head": 1.45,
+      "external_inflow": 0.02,
+      "head": 2.029343110131,
+      "level": 0.579343110131,
+      "node_id": "underpeak_deep_river",
+      "storage": 0.492441643612,
+      "storage_capacity": 0.85,
+      "water_tags": [
+        "fresh",
+        "underground",
+        "native_nereid"
+      ]
+    },
+    "underpeak_gallery_sump": {
+      "base_head": 2.05,
+      "external_inflow": 0.0,
+      "head": 2.612670565879,
+      "level": 0.562670565879,
+      "node_id": "underpeak_gallery_sump",
+      "storage": 0.168801169764,
+      "storage_capacity": 0.3,
+      "water_tags": [
+        "fresh",
+        "gallery"
+      ]
+    },
+    "underpeak_gate_forebay": {
+      "base_head": 2.25,
+      "external_inflow": 0.0,
+      "head": 2.804553913718,
+      "level": 0.554553913718,
+      "node_id": "underpeak_gate_forebay",
+      "storage": 0.249549261173,
+      "storage_capacity": 0.45,
+      "water_tags": [
+        "fresh",
+        "waterworks"
+      ]
+    },
+    "underpeak_upper_reach": {
+      "base_head": 1.85,
+      "external_inflow": 0.03,
+      "head": 2.420065154082,
+      "level": 0.570065154082,
+      "node_id": "underpeak_upper_reach",
+      "storage": 0.342039092449,
+      "storage_capacity": 0.6,
+      "water_tags": [
+        "fresh",
+        "underground"
+      ]
+    }
+  }
+}

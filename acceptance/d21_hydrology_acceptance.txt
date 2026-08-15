@@ -1,0 +1,26 @@
+WORLD ZERO V0.0-D.2.1 — P3 WORLD PROCESS + HYDROLOGY ACCEPTANCE
+Lab Nereid cognition remains an acceptance double; physics is authoritative.
+
+  [LAW +] fixed process clock survives a large world-time jump: hydrology_ticks=120; runtime_runs=120
+  [LAW +] baseline water mass is conserved with explicit sources sinks and spill: max_abs_residual=0.000e+00
+  [LAW +] hydrology forensic hashes form a continuous state chain: traces=120
+  [LAW +] baseline ancient gate does not create Nereid passage: effective_opening=0.0054
+  [LAW +] baseline burial remains covered without a story trigger: cover=0.6067
+  [LAW +] player absence does not pause hydrology or Projects: ticks=120; player_events=0; attempts=4
+  [LAW +] Nereid attempt is resolved by physical water continuity: passage_attempts=4; project_status=active
+  [LAW +] physical failure becomes later subjective Project evidence: decisions=4; resolutions=4
+  [LAW +] physical resolver does not leak the hydrology answer key into Project state: subjective_evidence_refs=10
+  [LAW +] moderate regime can help mortal route without satisfying Nereid: gallery=passable; aquatic=False
+  [LAW +] sustained higher flow can help Nereid while harming Trade and burial bank: aquatic=True; gallery_level=1.000; exposure=1.000
+  [LAW +] identical physical history is deterministic: final_hash=f0c441fe6ce3a512
+  [LAW +] capacity spill is explicit rather than silently clamped away: recorded_spill=3.4290
+  [LAW +] raw physical transitions do not masquerade as divine percepts: guarded_transitions=4
+  [LAW +] bank reinforcement changes burial outcome under the same gate regime: unreinforced_cover=0.000; reinforced_cover=0.132
+  [LAW +] brief high flow can end without exposing the burial: cover_after_30d=0.536
+  [LAW +] gallery work can create a real temporary Nereid-Trade overlap: aquatic=True; gallery=wet_risky
+  [LAW +] damaged closed gate leaks without becoming passable: integrity=0.12; discharge=0.0048
+  [LAW +] P3 runtimes stayed healthy: project_errors=0; simulation_errors=0
+
+LAWS: 19/19
+Hydrology ticks: 120
+Project decisions/intents/resolutions: 4/4/4

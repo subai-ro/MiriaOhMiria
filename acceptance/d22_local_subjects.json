@@ -1,0 +1,63 @@
+{
+  "arra": {
+    "capability_levels": {
+      "adjust_sluice": 0.6,
+      "inspect_gate": 0.7,
+      "inspect_water_state": 0.7
+    },
+    "faculties": [
+      "sight"
+    ],
+    "present_site_ids": [
+      "lake_mirror"
+    ],
+    "resources": {
+      "effort": 2.0
+    },
+    "subject_id": "arra",
+    "subject_kind": "mortal"
+  },
+  "nereid_01": {
+    "capability_levels": {
+      "inspect_gate": 0.7,
+      "inspect_water_state": 1.0,
+      "shift_local_silt": 0.78
+    },
+    "faculties": [
+      "water_sense",
+      "native_water_memory"
+    ],
+    "present_site_ids": [
+      "northwood_junction",
+      "underpeak_gate_forebay"
+    ],
+    "resources": {
+      "effort": 3.65
+    },
+    "subject_id": "nereid_01",
+    "subject_kind": "lesser_water_entity"
+  },
+  "trade_house_01": {
+    "capability_levels": {
+      "adjust_sluice": 0.88,
+      "clear_gate_debris": 0.82,
+      "force_sluice": 0.65,
+      "inspect_gate": 0.92,
+      "inspect_water_state": 0.65,
+      "repair_gate": 0.8
+    },
+    "faculties": [
+      "sight",
+      "engineering"
+    ],
+    "present_site_ids": [
+      "underpeak_gate_forebay"
+    ],
+    "resources": {
+      "effort": 6.55,
+      "materials": 4.0
+    },
+    "subject_id": "trade_house_01",
+    "subject_kind": "institutional_field_team"
+  }
+}

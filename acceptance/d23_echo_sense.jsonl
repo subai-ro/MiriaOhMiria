@@ -1,0 +1,1 @@
+{"end_minute": 390, "event_id": 7, "outcome": "sensed", "percept_ref": "local_percept:1", "ref": "aqueous_echo_sense:1", "sense_id": 1, "source_echo_tick_ref": "aqueous_echo_tick:1", "source_state_hash": "3d1c6108159a5c4534629c61ed5b7762d2d5768b9c94c8767b186b8bc7903c8e", "start_minute": 360, "subject_id": "nereid_01", "water_node_id": "northwood_junction"}

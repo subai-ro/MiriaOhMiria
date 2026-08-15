@@ -1,0 +1,502 @@
+{
+  "edges": [
+    {
+      "kind": "observation_state_source",
+      "source_ref": "hydrology_tick:1",
+      "target_ref": "local_percept:2"
+    },
+    {
+      "kind": "observation_state_source",
+      "source_ref": "hydrology_tick:1",
+      "target_ref": "local_percept:3"
+    },
+    {
+      "kind": "observation_state_source",
+      "source_ref": "hydrology_tick:3",
+      "target_ref": "local_percept:4"
+    },
+    {
+      "kind": "observation_state_source",
+      "source_ref": "hydrology_tick:6",
+      "target_ref": "local_percept:5"
+    },
+    {
+      "kind": "objective_consequence",
+      "source_ref": "hydrology_tick:6",
+      "target_ref": "world_event:10"
+    },
+    {
+      "kind": "decision_input",
+      "source_ref": "local_percept:1",
+      "target_ref": "physical_action:3"
+    },
+    {
+      "kind": "decision_input",
+      "source_ref": "local_percept:2",
+      "target_ref": "physical_action:6"
+    },
+    {
+      "kind": "decision_input",
+      "source_ref": "local_percept:3",
+      "target_ref": "physical_action:7"
+    },
+    {
+      "kind": "decision_input",
+      "source_ref": "local_percept:4",
+      "target_ref": "physical_action:10"
+    },
+    {
+      "kind": "decision_input",
+      "source_ref": "local_percept:4",
+      "target_ref": "physical_action:11"
+    },
+    {
+      "kind": "decision_input",
+      "source_ref": "local_percept:4",
+      "target_ref": "physical_action:9"
+    },
+    {
+      "kind": "action_resolution",
+      "source_ref": "physical_action:10",
+      "target_ref": "world_event:8"
+    },
+    {
+      "kind": "action_resolution",
+      "source_ref": "physical_action:11",
+      "target_ref": "world_event:9"
+    },
+    {
+      "kind": "action_resolution",
+      "source_ref": "physical_action:12",
+      "target_ref": "world_event:11"
+    },
+    {
+      "kind": "action_resolution",
+      "source_ref": "physical_action:2",
+      "target_ref": "world_event:1"
+    },
+    {
+      "kind": "action_resolution",
+      "source_ref": "physical_action:3",
+      "target_ref": "world_event:2"
+    },
+    {
+      "kind": "action_resolution",
+      "source_ref": "physical_action:4",
+      "target_ref": "world_event:3"
+    },
+    {
+      "kind": "action_resolution",
+      "source_ref": "physical_action:5",
+      "target_ref": "world_event:4"
+    },
+    {
+      "kind": "action_resolution",
+      "source_ref": "physical_action:7",
+      "target_ref": "world_event:5"
+    },
+    {
+      "kind": "action_resolution",
+      "source_ref": "physical_action:8",
+      "target_ref": "world_event:6"
+    },
+    {
+      "kind": "action_resolution",
+      "source_ref": "physical_action:9",
+      "target_ref": "world_event:7"
+    },
+    {
+      "kind": "perception_record",
+      "source_ref": "world_event:1",
+      "target_ref": "local_percept:1"
+    },
+    {
+      "kind": "objective_cause",
+      "source_ref": "world_event:1",
+      "target_ref": "world_event:2"
+    },
+    {
+      "kind": "perception_source",
+      "source_ref": "world_event:10",
+      "target_ref": "local_percept:5"
+    },
+    {
+      "kind": "objective_cause",
+      "source_ref": "world_event:10",
+      "target_ref": "world_event:11"
+    },
+    {
+      "kind": "perception_record",
+      "source_ref": "world_event:11",
+      "target_ref": "local_percept:5"
+    },
+    {
+      "kind": "physical_consequence_input",
+      "source_ref": "world_event:2",
+      "target_ref": "hydrology_tick:1"
+    },
+    {
+      "kind": "physical_consequence_input",
+      "source_ref": "world_event:2",
+      "target_ref": "hydrology_tick:2"
+    },
+    {
+      "kind": "perception_source",
+      "source_ref": "world_event:2",
+      "target_ref": "local_percept:2"
+    },
+    {
+      "kind": "perception_source",
+      "source_ref": "world_event:2",
+      "target_ref": "local_percept:3"
+    },
+    {
+      "kind": "objective_cause",
+      "source_ref": "world_event:2",
+      "target_ref": "world_event:3"
+    },
+    {
+      "kind": "objective_cause",
+      "source_ref": "world_event:2",
+      "target_ref": "world_event:4"
+    },
+    {
+      "kind": "perception_record",
+      "source_ref": "world_event:3",
+      "target_ref": "local_percept:2"
+    },
+    {
+      "kind": "perception_record",
+      "source_ref": "world_event:4",
+      "target_ref": "local_percept:3"
+    },
+    {
+      "kind": "objective_cause",
+      "source_ref": "world_event:4",
+      "target_ref": "world_event:5"
+    },
+    {
+      "kind": "physical_consequence_input",
+      "source_ref": "world_event:5",
+      "target_ref": "hydrology_tick:3"
+    },
+    {
+      "kind": "perception_source",
+      "source_ref": "world_event:5",
+      "target_ref": "local_percept:4"
+    },
+    {
+      "kind": "objective_cause",
+      "source_ref": "world_event:5",
+      "target_ref": "world_event:6"
+    },
+    {
+      "kind": "perception_record",
+      "source_ref": "world_event:6",
+      "target_ref": "local_percept:4"
+    },
+    {
+      "kind": "objective_cause",
+      "source_ref": "world_event:6",
+      "target_ref": "world_event:7"
+    },
+    {
+      "kind": "objective_cause",
+      "source_ref": "world_event:6",
+      "target_ref": "world_event:8"
+    },
+    {
+      "kind": "objective_cause",
+      "source_ref": "world_event:6",
+      "target_ref": "world_event:9"
+    },
+    {
+      "kind": "physical_consequence_input",
+      "source_ref": "world_event:7",
+      "target_ref": "hydrology_tick:4"
+    },
+    {
+      "kind": "physical_consequence_input",
+      "source_ref": "world_event:9",
+      "target_ref": "hydrology_tick:5"
+    },
+    {
+      "kind": "physical_consequence_input",
+      "source_ref": "world_event:9",
+      "target_ref": "hydrology_tick:6"
+    },
+    {
+      "kind": "perception_source",
+      "source_ref": "world_event:9",
+      "target_ref": "local_percept:5"
+    },
+    {
+      "kind": "objective_cause",
+      "source_ref": "world_event:9",
+      "target_ref": "world_event:10"
+    },
+    {
+      "kind": "objective_cause",
+      "source_ref": "world_event:9",
+      "target_ref": "world_event:11"
+    }
+  ],
+  "nodes": [
+    {
+      "game_minute": 360,
+      "input_state_hash": "392eb4c24d48502dfa6eece4ee3b4d649b8c5e53e5790a611b7d37adcdf43658",
+      "kind": "hydrology_tick",
+      "output_state_hash": "70334d84b09f42d1a4315dac7e86cdafef05e33854b38e3215e409b2200938c8",
+      "ref": "hydrology_tick:1"
+    },
+    {
+      "game_minute": 720,
+      "input_state_hash": "70334d84b09f42d1a4315dac7e86cdafef05e33854b38e3215e409b2200938c8",
+      "kind": "hydrology_tick",
+      "output_state_hash": "a8d6ae8da7072a3ec723aba6a12a309c001cdfd7d134d12a43191271ef673520",
+      "ref": "hydrology_tick:2"
+    },
+    {
+      "game_minute": 1080,
+      "input_state_hash": "9503ae079ecc78b6e5b5a5ef3df03063be94dcb525aa95510a6f425bb3a5fdd8",
+      "kind": "hydrology_tick",
+      "output_state_hash": "81e196d07af502d1329956a7371fbc57c8f19797a64bbb68e2502adc843ab1f8",
+      "ref": "hydrology_tick:3"
+    },
+    {
+      "game_minute": 1440,
+      "input_state_hash": "d3afddd9e022625c28cc489a40777f174efded8bdfb89935e46bc5d1072e2112",
+      "kind": "hydrology_tick",
+      "output_state_hash": "8c9657009305382e6e87ecddf411d5257800a89340a6e46622d87317e5d2ad87",
+      "ref": "hydrology_tick:4"
+    },
+    {
+      "game_minute": 1800,
+      "input_state_hash": "0303e48cb9506345cf2e20cec770b9dbdffb9710eb2b31c331c805dbcb53632f",
+      "kind": "hydrology_tick",
+      "output_state_hash": "618b8569d2b9f8a6ca59b4d2f9b28b1f86419f03b3032d8bf1bfd18ca55927b5",
+      "ref": "hydrology_tick:5"
+    },
+    {
+      "game_minute": 2160,
+      "input_state_hash": "618b8569d2b9f8a6ca59b4d2f9b28b1f86419f03b3032d8bf1bfd18ca55927b5",
+      "kind": "hydrology_tick",
+      "output_state_hash": "acfc32d19f8156c4a22442ffbe6c4c8febe110d599529c214a79986d83729b55",
+      "ref": "hydrology_tick:6"
+    },
+    {
+      "game_minute": 45,
+      "kind": "subjective_percept",
+      "observation_type": "inspect_gate",
+      "ref": "local_percept:1",
+      "subject_id": "nereid_01",
+      "target_ref": "underpeak_river_gate"
+    },
+    {
+      "game_minute": 630,
+      "kind": "subjective_percept",
+      "observation_type": "inspect_gate",
+      "ref": "local_percept:2",
+      "subject_id": "nereid_01",
+      "target_ref": "underpeak_river_gate"
+    },
+    {
+      "game_minute": 675,
+      "kind": "subjective_percept",
+      "observation_type": "inspect_gate",
+      "ref": "local_percept:3",
+      "subject_id": "trade_house_01",
+      "target_ref": "underpeak_river_gate"
+    },
+    {
+      "game_minute": 1080,
+      "kind": "subjective_percept",
+      "observation_type": "inspect_gate",
+      "ref": "local_percept:4",
+      "subject_id": "trade_house_01",
+      "target_ref": "underpeak_river_gate"
+    },
+    {
+      "game_minute": 2370,
+      "kind": "subjective_percept",
+      "observation_type": "inspect_water_state",
+      "ref": "local_percept:5",
+      "subject_id": "nereid_01",
+      "target_ref": "underpeak_gate_forebay"
+    },
+    {
+      "action_type": "inspect_gate",
+      "end_minute": 0,
+      "kind": "physical_action",
+      "outcome": "rejected",
+      "ref": "physical_action:1",
+      "start_minute": 0,
+      "subject_id": "arra"
+    },
+    {
+      "action_type": "adjust_sluice",
+      "end_minute": 1440,
+      "kind": "physical_action",
+      "outcome": "partial",
+      "ref": "physical_action:10",
+      "start_minute": 1260,
+      "subject_id": "trade_house_01"
+    },
+    {
+      "action_type": "adjust_sluice",
+      "end_minute": 1620,
+      "kind": "physical_action",
+      "outcome": "succeeded",
+      "ref": "physical_action:11",
+      "start_minute": 1440,
+      "subject_id": "trade_house_01"
+    },
+    {
+      "action_type": "inspect_water_state",
+      "end_minute": 2370,
+      "kind": "physical_action",
+      "outcome": "succeeded",
+      "ref": "physical_action:12",
+      "start_minute": 2340,
+      "subject_id": "nereid_01"
+    },
+    {
+      "action_type": "inspect_gate",
+      "end_minute": 45,
+      "kind": "physical_action",
+      "outcome": "succeeded",
+      "ref": "physical_action:2",
+      "start_minute": 0,
+      "subject_id": "nereid_01"
+    },
+    {
+      "action_type": "shift_local_silt",
+      "end_minute": 225,
+      "kind": "physical_action",
+      "outcome": "succeeded",
+      "ref": "physical_action:3",
+      "start_minute": 45,
+      "subject_id": "nereid_01"
+    },
+    {
+      "action_type": "inspect_gate",
+      "end_minute": 630,
+      "kind": "physical_action",
+      "outcome": "succeeded",
+      "ref": "physical_action:4",
+      "start_minute": 585,
+      "subject_id": "nereid_01"
+    },
+    {
+      "action_type": "inspect_gate",
+      "end_minute": 675,
+      "kind": "physical_action",
+      "outcome": "succeeded",
+      "ref": "physical_action:5",
+      "start_minute": 630,
+      "subject_id": "trade_house_01"
+    },
+    {
+      "action_type": "adjust_sluice",
+      "end_minute": 675,
+      "kind": "physical_action",
+      "outcome": "rejected",
+      "ref": "physical_action:6",
+      "start_minute": 675,
+      "subject_id": "trade_house_01"
+    },
+    {
+      "action_type": "clear_gate_debris",
+      "end_minute": 1035,
+      "kind": "physical_action",
+      "outcome": "succeeded",
+      "ref": "physical_action:7",
+      "start_minute": 675,
+      "subject_id": "trade_house_01"
+    },
+    {
+      "action_type": "inspect_gate",
+      "end_minute": 1080,
+      "kind": "physical_action",
+      "outcome": "succeeded",
+      "ref": "physical_action:8",
+      "start_minute": 1035,
+      "subject_id": "trade_house_01"
+    },
+    {
+      "action_type": "adjust_sluice",
+      "end_minute": 1260,
+      "kind": "physical_action",
+      "outcome": "partial",
+      "ref": "physical_action:9",
+      "start_minute": 1080,
+      "subject_id": "trade_house_01"
+    },
+    {
+      "event_type": "LOCAL_INSPECTION_PERFORMED",
+      "game_minute": 45,
+      "kind": "world_event",
+      "ref": "world_event:1"
+    },
+    {
+      "event_type": "AQUATIC_ROUTE_BECAME_VIABLE",
+      "game_minute": 2160,
+      "kind": "world_event",
+      "ref": "world_event:10"
+    },
+    {
+      "event_type": "LOCAL_INSPECTION_PERFORMED",
+      "game_minute": 2370,
+      "kind": "world_event",
+      "ref": "world_event:11"
+    },
+    {
+      "event_type": "LOCAL_SILT_SHIFTED",
+      "game_minute": 225,
+      "kind": "world_event",
+      "ref": "world_event:2"
+    },
+    {
+      "event_type": "LOCAL_INSPECTION_PERFORMED",
+      "game_minute": 630,
+      "kind": "world_event",
+      "ref": "world_event:3"
+    },
+    {
+      "event_type": "LOCAL_INSPECTION_PERFORMED",
+      "game_minute": 675,
+      "kind": "world_event",
+      "ref": "world_event:4"
+    },
+    {
+      "event_type": "GATE_DEBRIS_CLEARED",
+      "game_minute": 1035,
+      "kind": "world_event",
+      "ref": "world_event:5"
+    },
+    {
+      "event_type": "LOCAL_INSPECTION_PERFORMED",
+      "game_minute": 1080,
+      "kind": "world_event",
+      "ref": "world_event:6"
+    },
+    {
+      "event_type": "SLUICE_ADJUSTED",
+      "game_minute": 1260,
+      "kind": "world_event",
+      "ref": "world_event:7"
+    },
+    {
+      "event_type": "SLUICE_ADJUSTED",
+      "game_minute": 1440,
+      "kind": "world_event",
+      "ref": "world_event:8"
+    },
+    {
+      "event_type": "SLUICE_ADJUSTED",
+      "game_minute": 1620,
+      "kind": "world_event",
+      "ref": "world_event:9"
+    }
+  ]
+}

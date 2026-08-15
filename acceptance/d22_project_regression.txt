@@ -1,0 +1,19 @@
+WORLD ZERO V0.0-D.2.0 — PERSISTENT PROJECT ACCEPTANCE
+Prehistory: 30 elapsed days; player-controlled actions: 0
+LabNereidMind is an acceptance double, not canonical Nereid behavior.
+
+  [LAW +] world advanced without player action: minute=43200; Arra-authored events=0
+  [LAW +] Nereid project predates player relevance: created=0; now=43200
+  [LAW +] unfinished desire survived repeated failure: status=active; attempts=4
+  [LAW +] authoritative resolver, not the mind, decided passage failure: legacy underpeak accessibility remained false
+  [LAW +] failed attempt became later decision evidence: decisions=4; resolutions=4
+  [LAW +] strategy can change without replacing the underlying project: distinct strategies=3; project=nereid_return_underpeak
+  [LAW +] independent Trade House project also persists: status=active; attempts=0
+  [LAW +] forensic braid reaches objective results: trace edges=36; objective Nereid events=4
+  [LAW +] project schema has no mandatory player role: PersistentProject contains owner/desire/state, not an assigned player slot
+  [LAW +] project runtime stayed healthy: runtime_errors=0; tick_errors=0
+
+LAWS: 10/10
+Nereid project: status=active; attempts=4; revision=9
+Trade House project: status=active; attempts=0; revision=1
+Trace: decisions=4; intents=4; resolutions=4; edges=36

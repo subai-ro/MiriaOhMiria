@@ -1,0 +1,37 @@
+WORLD ZERO V0.0-D.2.3 — P4-B AQUEOUS SILVER ECHO ACCEPTANCE
+Hidden metaphysics is objective; local sensing is private and imperfect.
+The process reads material contact, never FISHED -> Nereid or quest logic.
+
+  [LAW +] fishing records a general material-medium contract rather than a story trigger: event=FISHED; schema=material_medium_contact.v1
+  [LAW +] echo consumes the contact schema without inspecting the gameplay verb: generic_event=BASIN_RINSED; impulse=0.028860
+  [LAW +] a different silver object obeys the same material law: silver_probe=0.028860; silver_rod=0.028860
+  [LAW +] non-silver water contact remains physically ordinary: hands=0.000000; iron=0.000000
+  [LAW +] repeated contact accumulates as physical impulse with no count threshold: contacts=3; impulse=0.086580
+  [LAW +] the weak echo decays when material contact stops: after_contact=0.027920; after_3d=0.000912
+  [LAW +] fixed clocks run Hydrology before Echo across a large world-time jump: hydrology_ticks=120; echo_ticks=120
+  [LAW +] echo forensic hashes form a continuous state chain: traces=120; final=16aea343c5e6f65c
+  [LAW +] decay transport and attenuation are explicitly balanced: max_abs_residual=0.000e+00
+  [LAW +] Mirror and Whisper differ through actual water state rather than a lake-name branch: mirror=0.003242; whisper=0.002771
+  [LAW +] zero-flow water edges do not teleport the echo: flow=0.000000; junction_echo=0.000000
+  [LAW +] the baseline closed Gate keeps the deep-river echo below perception: deep_concentration=0.000434
+  [LAW +] opening the Gate changes downstream echo under identical contacts: closed=0.000186; open=0.000989
+  [LAW +] objective echo evolution does not manufacture subjective knowledge: echo_ticks=1; private_percepts=0
+  [LAW +] remote echo sensing is rejected before time state or Ledger mutation: outcome=rejected; minute=360
+  [LAW +] local presence alone does not grant the required water faculty: subject=trade_house_01; outcome=rejected
+  [LAW +] a local water faculty creates one private imperfect percept: percept=local_percept:1; owner=nereid_01
+  [LAW +] the private percept exposes qualitative cues without source or formula: cues=echo_presence,movement_cue,source_identity,water_borne_pattern
+  [LAW +] the objective sensing event withholds its private payload: event=5
+  [LAW +] one subject cannot read another subject's aqueous percept: private_guard=True
+  [LAW +] raw hidden-metaphysics transitions remain barred from divine omniscience: guarded_transitions=2
+  [LAW +] silver-water physics creates no attention contact request quest or Project mutation: forbidden_events=0; project_revisions_unchanged=True
+  [LAW +] the echo state schema has no actor entity or narrative slot: fields=band_states,node_amounts
+  [LAW +] Creator forensic braid reaches contact water transport echo and private perception: nodes=11; edges=10
+  [LAW +] identical material water and sensing histories are deterministic: final_hash=7b4c86b059297d61
+  [LAW +] P4-B runtimes and Ledger listeners stayed healthy: listener_errors=0; checked_echo_ticks=145
+
+LAWS: 26/26
+Hydrology/Echo ticks: 120/120
+Resonant contacts in focal first tick: 3
+Private echo-sense traces in exported focal run: 1
+Mirror/Whisper junction echo: 0.003242/0.002771
+Closed/Open deep-river echo: 0.000186/0.000989
