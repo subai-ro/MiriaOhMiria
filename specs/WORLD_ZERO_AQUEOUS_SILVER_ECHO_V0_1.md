@@ -1,8 +1,9 @@
 # WORLD ZERO — AQUEOUS SILVER ECHO v0.1
 
-**Checkpoint:** V0.0-D.2.3  
-**Construction boundary:** Silver Thread P4-B  
-**Status:** implemented candidate; requires recipient-machine acceptance  
+**Checkpoint:** V0.0-D.2.3
+**Construction boundary:** Silver Thread P4-B
+**Status:** user-local accepted and frozen
+**Acceptance date:** 2026-08-15
 **Depends on:** frozen D.1.4.2 epistemic kernel, D.2.0 PersistentProject,
 D.2.1 Hydrology, D.2.2 Physical Affordances + Local Perception
 
@@ -355,7 +356,7 @@ py run_affordance_trials.py --days 30
 py run_aqueous_echo_trials.py --days 30 --seed 42
 ```
 
-Expected D.2.3 candidate gate:
+Frozen D.2.3 gate:
 
 ```text
 139 unit tests
@@ -365,5 +366,8 @@ Expected D.2.3 candidate gate:
 26/26 Aqueous Silver Echo LAW
 ```
 
+The user-local run reproduced these totals and the user explicitly accepted
+and froze D.2.3 on 2026-08-15.
+
 No model server or API key is needed. Canonical neural Nereid cognition belongs
-to P5 and is explicitly outside this checkpoint.
+to the next design-first P5 stage and is explicitly outside this checkpoint.

@@ -1,11 +1,12 @@
 # D.2.3 acceptance record
 
-**Checkpoint:** `world_zero_v0_0d2_3`  
-**Stage:** P4-B — Aqueous Silver Echo  
-**Built:** 2026-08-15  
-**Status:** candidate; independent user-local acceptance pending
+**Checkpoint:** `world_zero_v0_0d2_3`
+**Stage:** P4-B — Aqueous Silver Echo
+**Built:** 2026-08-15
+**User-local acceptance:** 2026-08-15
+**Status:** user-local accepted and frozen
 
-## Builder-side verification
+## Builder and user-local verification
 
 | Gate | Result |
 | --- | --- |
@@ -14,6 +15,9 @@
 | D.2.1 Hydrology regression | 19/19 LAW |
 | D.2.2 Physical Affordances + Local Perception regression | 26/26 LAW |
 | D.2.3 Aqueous Silver Echo | 26/26 LAW |
+
+The user-local run reproduced all five gates and the user explicitly accepted
+the results on 2026-08-15.
 
 ## New proof boundary
 
@@ -70,8 +74,9 @@ LAWS: 26/26
 
 No Ollama server, neural model or API key is required for D.2.3.
 
-## Freeze rule
+## Freeze decision
 
-Do not mark P4-B frozen until the user-local run reproduces all five gates. A
-failure is evidence to inspect, not a reason to weaken or reclassify a LAW.
-
+The pre-freeze rule required the user-local run to reproduce all five gates and
+the user to accept the results explicitly. Both conditions were met on
+2026-08-15, so P4-B is frozen. Any later failure remains evidence to inspect,
+not a reason to weaken or reclassify a LAW.

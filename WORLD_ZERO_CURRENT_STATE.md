@@ -1,8 +1,8 @@
 # World Zero current state
 
-**Snapshot date:** 2026-08-15  
-**Executable checkpoint:** V0.0-D.2.3, Aqueous Silver Echo  
-**Release status:** implemented candidate; user-local D.2.3 acceptance pending  
+**Snapshot date:** 2026-08-15
+**Executable checkpoint:** V0.0-D.2.3, Aqueous Silver Echo
+**Release status:** user-local accepted and frozen on 2026-08-15
 **Runtime dependencies for D.2.3:** Python 3.10+ standard library only
 
 ## Acceptance status
@@ -13,9 +13,9 @@
 | D.2.0 | Persistent Projects | 10/10 LAW | accepted |
 | D.2.1 | Fixed-clock Hydrology | 19/19 LAW | accepted |
 | D.2.2 | Physical Affordances + Local Perception | 26/26 LAW | accepted |
-| D.2.3 | Aqueous Silver Echo | 139 tests and 26/26 LAW; all regressions green | pending |
+| D.2.3 | Aqueous Silver Echo | 139 tests; LAW 10/10, 19/19, 26/26, 26/26 | accepted and frozen (2026-08-15) |
 
-The D.2.3 builder gate reproduced:
+The D.2.3 builder and user-local gates reproduced:
 
     Ran 139 tests
     OK
@@ -24,8 +24,8 @@ The D.2.3 builder gate reproduced:
     Affordances: 26/26 LAW
     Aqueous Echo: 26/26 LAW
 
-Run verify_d23.ps1 on the recipient machine. Do not update the last column or
-freeze D.2.3 until the user confirms all five gates.
+The user explicitly accepted these local results on 2026-08-15. D.2.3 is now a
+frozen baseline; later work must preserve its causal and acceptance boundaries.
 
 ## Implemented causal stack
 
@@ -83,12 +83,11 @@ not canonical character behavior.
 The interactive banner in worldzero/interactive.py still contains an older
 D.2.0 label. Treat it as cosmetic technical debt, not current checkpoint truth.
 
-## Immediate next action
+## Next allowed construction stage
 
-1. Run the complete D.2.3 gate on the user's machine.
-2. If every gate passes, record the user-local acceptance without altering
-   behavior.
-3. Only then design P5: canonical model-backed Nereid cognition.
+Begin design-first P5 canonical model-backed Nereid cognition. The first P5
+artifact must be a design and acceptance contract, not implementation code.
+Implementation and any real-model trials require a separately approved plan.
 
 P5 must receive only SubjectiveWorldView and owned private percepts. It must not
 receive HydrologyState, AqueousEchoState, formulas, exact field values, hidden

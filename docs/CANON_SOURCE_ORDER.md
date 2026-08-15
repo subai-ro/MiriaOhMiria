@@ -25,8 +25,9 @@ Do not silently choose whichever source makes the task easiest.
 
 The foundation documents were written on 2026-08-07 around D.1.3.3 and the
 planned D.1.4 work. Their roadmap labels are historical. The project has since
-completed and frozen D.1.4.2, D.2.0, D.2.1, and D.2.2, and built the D.2.3
-candidate.
+completed and frozen D.1.4.2, D.2.0, D.2.1, D.2.2, and D.2.3. D.2.3 was
+user-local accepted on 2026-08-15 after 139 tests and LAW 10/10, 19/19, 26/26,
+26/26.
 
 The old documents remain authoritative for enduring principles such as limited
 knowledge, causal autonomy, non-player-centered history, and the separation

@@ -3,7 +3,8 @@
 **Prepared:** 2026-08-15  
 **Purpose:** continue development from a local Codex project without depending
 on the previous chat transcript  
-**Transferred baseline:** V0.0-D.2.3 candidate
+**Historical transferred baseline:** V0.0-D.2.3 candidate
+**Current status:** V0.0-D.2.3 user-local accepted and frozen on 2026-08-15
 
 ## Executive state
 
@@ -22,8 +23,9 @@ The accepted stack now proves that:
   actual water flow;
 - the law does not create interest, contact, a request, or a quest.
 
-D.2.3 passes all builder-side gates. It must still be reproduced on the user's
-Windows machine before being frozen.
+D.2.3 passed all builder-side and user-local gates. The user explicitly
+accepted and froze it on 2026-08-15 with 139 tests and LAW 10/10, 19/19, 26/26,
+26/26.
 
 ## Checkpoint history
 
@@ -84,7 +86,8 @@ AqueousEchoSenseBridge permits an exactly local subject with water_sense to
 form one private coarse percept. The process and bridge contain no automatic
 Nereid attention, contact, request, Project mutation, or quest.
 
-Builder results: 139 tests, D.2.0 10/10, D.2.1 19/19, D.2.2 26/26, D.2.3 26/26.
+Frozen results: 139 tests, D.2.0 10/10, D.2.1 19/19, D.2.2 26/26, D.2.3 26/26.
+The user-local run reproduced these totals on 2026-08-15.
 
 ## Protected seams
 
@@ -115,19 +118,20 @@ Projects, processes, institutions, and entities do not require player presence.
 The player can intervene in an existing situation but is not assigned as its
 solution.
 
-## First recipient-machine task
+## Completed recipient-machine acceptance
 
-Run:
+The historical first task was to run:
 
     powershell -ExecutionPolicy Bypass -File .\verify_d23.ps1
 
-If the exact expected totals pass, make a documentation-only acceptance update.
-If not, keep D.2.3 candidate and diagnose the environment or behavior without
-changing LAW definitions.
+The command reproduced 139 tests and LAW 10/10, 19/19, 26/26, 26/26. The user
+explicitly accepted the results on 2026-08-15. This procedure is retained as
+acceptance history; D.2.3 is now frozen.
 
-## Next construction boundary
+## Next allowed construction boundary
 
-After acceptance, P5 is canonical model-backed Nereid cognition.
+With D.2.3 frozen, the next stage is design-first P5 canonical model-backed
+Nereid cognition.
 
 The first P5 artifact should be a design and acceptance contract, not code.
 It must specify:

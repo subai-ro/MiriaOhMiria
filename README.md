@@ -6,6 +6,8 @@
 
 # World Zero V0.0-D.2.3 — Aqueous Silver Echo
 
+**Status:** user-local accepted and frozen on 2026-08-15.
+
 `V0.0-D.2.3` implements Silver Thread **P4-B: a deterministic hidden
 metaphysics law for silver in connected water**. It is layered on the accepted
 D.2.2 local affordance/perception bridge without adding canonical Nereid
@@ -125,7 +127,7 @@ or cite it.
 
 ## P4-B acceptance
 
-Run the full candidate gate:
+Run the frozen regression gate:
 
 ```powershell
 py -m unittest discover -s tests -q
@@ -135,7 +137,7 @@ py run_affordance_trials.py --days 30
 py run_aqueous_echo_trials.py --days 30 --seed 42
 ```
 
-Expected candidate results:
+Accepted results, reproduced locally on 2026-08-15:
 
 - complete offline suite: **139 tests**;
 - frozen PersistentProject acceptance: **10/10 LAW**;
@@ -173,11 +175,12 @@ sense or interpret the field.
 - no route-based body movement through the water graph;
 - no story director.
 
-The next construction boundary is **P5: canonical model-backed Nereid
-cognition**. It may receive `SubjectiveWorldView`, including only actually
-formed private echo percepts, and decide whether to ignore, remember,
-investigate or act. P5 is not allowed to replace this fixed objective law or
-receive its exact state.
+The next allowed construction boundary is **design-first P5: canonical
+model-backed Nereid cognition**. Its first artifact must be a design and
+acceptance contract, not implementation code. It may receive
+`SubjectiveWorldView`, including only actually formed private echo percepts,
+and decide whether to ignore, remember, investigate or act. P5 is not allowed
+to replace this fixed objective law or receive its exact state.
 
 The detailed P4-B contract lives in
 `specs/WORLD_ZERO_AQUEOUS_SILVER_ECHO_V0_1.md`.

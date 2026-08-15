@@ -32,11 +32,11 @@ not describe the current executable version.
 - D.2.0 PersistentProject: frozen and user-local accepted.
 - D.2.1 Hydrology: frozen and user-local accepted.
 - D.2.2 Physical Affordances + Local Perception: frozen and user-local accepted.
-- D.2.3 Aqueous Silver Echo: implemented candidate; builder-side gates pass,
-  but user-local acceptance is still pending.
+- D.2.3 Aqueous Silver Echo: frozen and user-local accepted on 2026-08-15
+  after 139 tests and LAW 10/10, 19/19, 26/26, 26/26.
 
-Do not call a candidate frozen, accepted, or released until the user explicitly
-accepts the required local gates.
+Do not call any future candidate frozen, accepted, or released until the user
+explicitly accepts the required local gates.
 
 ## Non-negotiable laws
 
@@ -109,6 +109,9 @@ Expected results:
 - Affordances + Local Perception: 26/26 LAW
 - Aqueous Silver Echo: 26/26 LAW
 
+D.2.3 reproduced all five results on the user machine and was explicitly
+accepted and frozen on 2026-08-15.
+
 D.2.3 is entirely offline. It requires no Ollama process, API key, or package
 installation.
 
@@ -119,10 +122,11 @@ context 8192. Offline neural tests use doubles and must not call a provider.
 Do not silently substitute a different model or change the baseline parameters.
 Real-model trials require an explicit experimental plan and user approval.
 
-P5 canonical Nereid cognition may begin only after D.2.3 local acceptance. It
-must consume bounded private evidence, issue intents through existing
-resolvers, tolerate ignorance and misinterpretation, and remain free to ignore
-the silver echo.
+The next allowed stage is design-first P5 canonical model-backed Nereid
+cognition. Its first artifact must be a design and acceptance contract, not
+implementation code. P5 must consume bounded private evidence, issue intents
+through existing resolvers, tolerate ignorance and misinterpretation, and
+remain free to ignore the silver echo.
 
 ## Definition of done
 
