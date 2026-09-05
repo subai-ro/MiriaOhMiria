@@ -393,6 +393,8 @@ class PhysicalAffordanceBridge:
         ledger: EventLedger,
         hydrology: HydrologyProcess,
         perceptions: LocalPerceptionStore | None = None,
+        *,
+        advance_time: Callable[[int], None] | None = None,
     ) -> None:
         if hydrology.world is not world or hydrology.ledger is not ledger:
             raise ValueError("affordance bridge must share world and ledger with hydrology")
@@ -400,6 +402,7 @@ class PhysicalAffordanceBridge:
         self.ledger = ledger
         self._hydrology = hydrology
         self.perceptions = perceptions or LocalPerceptionStore()
+        self._advance_time = advance_time or world.advance
         self._subjects: dict[str, LocalSubjectState] = {}
         self._action_traces: list[PhysicalActionTrace] = []
 
@@ -652,7 +655,7 @@ class PhysicalAffordanceBridge:
         start_minute = self.world.game_minute
         input_hash = self._hydrology.state.state_hash()
         duration = ACTION_DURATIONS[request.action_type]
-        self.world.advance(duration)
+        self._advance_time(duration)
         cues, summary, certainty = self._observation_payload(subject, request.action_type, target_ref)
         parent_ids = self._observation_parent_event_ids(target_ref)
         event = self.ledger.append(
@@ -749,7 +752,7 @@ class PhysicalAffordanceBridge:
         start_minute = self.world.game_minute
         input_hash = self._hydrology.state.state_hash()
         duration = ACTION_DURATIONS[request.action_type]
-        self.world.advance(duration)
+        self._advance_time(duration)
         plan = self._mutation_plan(request, skill, effort)
         parent_ids = tuple(
             self.perceptions.provenance_for(ref).inspection_event_id for ref in evidence_refs
@@ -1259,6 +1262,8 @@ def create_silver_thread_affordance_bridge(
     world: WorldState,
     ledger: EventLedger,
     hydrology: HydrologyProcess,
+    *,
+    advance_time: Callable[[int], None] | None = None,
 ) -> PhysicalAffordanceBridge:
     """Create the production bridge with conservative seed-time local agency.
 
@@ -1268,7 +1273,12 @@ def create_silver_thread_affordance_bridge(
     sealed gallery or hidden bank.
     """
 
-    bridge = PhysicalAffordanceBridge(world, ledger, hydrology)
+    bridge = PhysicalAffordanceBridge(
+        world,
+        ledger,
+        hydrology,
+        advance_time=advance_time,
+    )
     bridge.register_subject(
         LocalSubjectState(
             subject_id="nereid_01",

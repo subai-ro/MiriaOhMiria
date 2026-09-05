@@ -6,7 +6,7 @@ import json
 from math import ceil, isfinite
 import os
 from time import perf_counter
-from typing import Any, Protocol
+from typing import Any, Callable, Protocol
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
@@ -510,6 +510,7 @@ class OllamaChatTransport:
         context_tokens: int = DEFAULT_LOCAL_CONTEXT_TOKENS,
         seed: int | None = None,
         keep_alive: str = "5m",
+        response_observer: Callable[[bytes], None] | None = None,
     ) -> None:
         if not endpoint.strip():
             raise NeuralConfigurationError("Ollama endpoint cannot be empty")
@@ -527,6 +528,7 @@ class OllamaChatTransport:
         self.context_tokens = context_tokens
         self.seed = seed
         self.keep_alive = keep_alive
+        self.response_observer = response_observer
 
     def build_payload(self, request: NeuralModelRequest) -> dict[str, Any]:
         percept_json = json.dumps(
@@ -585,6 +587,10 @@ class OllamaChatTransport:
                 f"local Ollama is unreachable at {self.endpoint}; is Ollama running?"
             ) from exc
 
+        if self.response_observer is not None:
+            # Optional experiment evidence sink. Fail before interpretation if
+            # recording fails; never make an unrecorded substitute request.
+            self.response_observer(raw_bytes)
         try:
             raw = json.loads(raw_bytes.decode("utf-8"))
         except (UnicodeDecodeError, json.JSONDecodeError) as exc:

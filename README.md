@@ -1,8 +1,251 @@
-> **Codex-ready transfer:** begin with
-> [START_HERE_CODEX.md](START_HERE_CODEX.md), then read
-> [WORLD_ZERO_CURRENT_STATE.md](WORLD_ZERO_CURRENT_STATE.md). The foundation
-> handoffs are preserved under docs/foundations/, but their old roadmap labels
-> do not override the current D.2.3 state.
+# MiriaOhMiria
+
+World Zero: a persistent autonomous world with bounded subjective knowledge
+and authoritative physical consequences. This repository contains the Python
+runtime, tests, canon, specifications and acceptance records needed to continue
+development. Begin with [AGENTS.md](AGENTS.md) and
+[WORLD_ZERO_CURRENT_STATE.md](WORLD_ZERO_CURRENT_STATE.md).
+
+## Quick start from a fresh checkout
+
+Python 3.10+ and its standard library are sufficient. No package installation,
+API key or model service is needed for the offline tests and frozen I1 loop.
+From the repository root (on Windows, `py` may replace `python`):
+
+```shell
+python -m unittest discover -s tests -q
+python run_pilot_i0_trials.py --seed 42
+python run_pilot_i1_trials.py --seed 42
+python run_pilot_nereid_trials.py --seed 42
+python play_pilot_i1.py
+```
+
+Current offline results: **220 tests, I0 13/13 LAW, I1 21/21 LAW, N1–N3 12/12
+E2E**, with the four earlier frozen LAW gates also green. The playable entry
+is still the frozen terminal I1 harness, not the external visual pilot.
+
+**Current blocker:** the approved initial N4 real-model experiment completed
+and **failed**: 6/68 ordinary decisions valid (8.82%, required 90%), 72 total
+calls, 18/18 exact replays. The next proposed step is a clearer model-facing
+action contract, followed only with separate approval by one bounded retry.
+Neither correction nor repeat model calls are authorized by cloning/testing.
+See [the complete result and diagnosis](acceptance/PILOT_0_1_I3_N_ACCEPTANCE.md#e1-initial-n4-result-and-complete-batch-review--2026-09-05).
+
+Canon and current plans are included under `docs/canon/`, `docs/pilot/` and
+`specs/`; their precedence is in [CANON_SOURCE_ORDER.md](docs/CANON_SOURCE_ORDER.md).
+Checked-in `acceptance/` contains historical builder evidence and stage records.
+Generated raw runs in `local_acceptance/`, caches, environments and credentials
+stay local and are ignored. The failed N4 result/protocol is recorded in the
+repository; its raw provider capture is not included.
+
+[START_HERE_CODEX.md](START_HERE_CODEX.md), `TRANSFER_MANIFEST.sha256` and the
+foundation handoffs are historical transfer material, not the current checkout
+manifest or next-step authority. `CODEX_NEXT_STAGE_PROMPT.md` is the preserved
+earlier design prompt, not an instruction to restart completed milestones.
+
+---
+
+# Pilot I3-N — N1–N3 offline candidate
+
+**Status:** N0 user-accepted on 2026-09-05, not declared frozen. N1–N3 are now
+builder-verified as one offline review candidate, not accepted/frozen. The
+protected frozen baseline remains Pilot I1 over I0/D.2.3.
+
+The new opt-in composition connects Nereid's existing Project and owned evidence
+to a structured mind adapter, bounded physical attempts and consequences Arra
+can later observe. I3-N is a
+prerequisite within the Nature/Silver line, not completion of Active Death,
+Nature God or the external ensemble pilot.
+
+- [Design and scope](specs/WORLD_ZERO_PILOT_0_1_I3_N_NEREID_AGENCY.md)
+- [Acceptance contract and N0–N4 results](acceptance/PILOT_0_1_I3_N_ACCEPTANCE.md)
+
+N0 adds an opt-in serial mode over the same PilotSession. It prevents mid-action
+decision re-entry, records actual action-completion time and advances no-player
+Project reviews without backdating. Default `py play_pilot_i1.py` is unchanged.
+
+```powershell
+py -m unittest discover -s tests -p test_pilot_n0.py -v
+py -m unittest discover -s tests -p test_pilot_nereid.py -v
+py run_pilot_nereid_trials.py --seed 42
+```
+
+At the N1–N3 review: **31 Nereid tests (including N01–N28), 207 total tests, 12/12 new
+end-to-end checks, all six frozen LAW gates green**. Compilation and the frozen
+I1 terminal smoke passed. N0's 18 scheduling tests remain intact.
+
+Five labelled lab histories compare work, deferral, lack of effort, absent
+cognition and ignorance. At equal minute 2205, Arra sees light/moderate debris;
+one bounded work attempt finished 945 minutes earlier. The same changed debris
+also changes an existing Trade House physical affordance. This diagnostic does
+not register Trade cognition or open the gate in the compared player histories.
+
+All decisions in these trials use explicit **offline lab doubles**, not a live
+model or scripted production character. The new factory requires an explicit
+transport; no provider or double is selected silently. Replay checks the exact
+private payload, model/prompt/schema configuration and resulting history.
+The subsequently approved initial N4 batch failed (see current status above).
+External visual Player View and HUMAN acceptance remain open; Creator HTML is
+a post-session report, and lab histories do not establish a neural pass.
+
+Optional report export (choose a new directory each time):
+
+```powershell
+py run_pilot_nereid_trials.py --seed 42 --output-dir local_acceptance/my_nereid_review
+```
+
+The recorded local builder report is
+`local_acceptance/pilot_nereid_2026-09-05_n1_n3/creator_report.html`.
+
+---
+
+# World Zero Pilot 0.1 — I1 Internal Playable Loop
+
+**Status:** user-local accepted and frozen on 2026-09-05 after guided play and
+the verified UX correction pass. D.2.3 and Pilot I0 remain frozen.
+
+I1 is the first version that can be played from an older-world opening to a
+visible persistent consequence:
+
+```powershell
+py play_pilot_i1.py
+```
+
+The world runs twelve hours before the first command. The player can explore
+the Underpeak Reach, sealed river gate and old gallery; inspect ordinary local
+conditions; pray to Death; wait; answer a divine question truthfully or
+falsely; consult the personal journal; or leave while the world continues.
+
+The terminal command vocabulary is:
+
+```text
+look, inspect, go bank/gate/gallery, pray, wait [minutes],
+answer <words>, journal, help, quit
+```
+
+Place arguments are explicit: moving to the current place reports that Arra is
+already there, while `look` or `inspect` aimed at a remote place is rejected
+without time, position or Ledger mutation. A named local target remains valid.
+
+`PilotPlayerView` is projected from lawful information instead of raw state:
+
+- current authored place and visible local presence;
+- Arra-owned observations from the existing private perception store;
+- divine manifestations actually resolved for Arra;
+- Arra's own exact spoken text, selected from the shared Ledger without
+  exposing the event record;
+- context actions derived from those inputs.
+
+It does not expose Ledger data, foreign percepts, Hydrology/Burial/Echo state,
+hashes, formulas, confidence or internal IDs. Arra still has ordinary sight and
+no `water_sense`.
+
+The journal labels observations, words received and Arra's own replies as
+separate categories. Gate and gallery summaries are rendered as natural player
+prose from already-owned qualitative cues; the frozen physical resolver and
+its objective state are unchanged.
+
+The I1 acceptance gate compares three histories from common T0:
+
+- H0 does not pray and receives no divine words;
+- H1 prays and reports an ordinary bank, receiving one question;
+- H2 falsely reports exposed bones, causing Death to issue one additional
+  cautious omen.
+
+The visible 0/1/2 difference survives a six-hour settling period. H2 changes
+real divine behavior without changing the false statement into truth, and the
+entire prayer -> probe -> response -> omen chain remains recoverable.
+
+Run the complete frozen gate:
+
+```powershell
+py -m unittest discover -s tests -q
+py run_pilot_i0_trials.py --seed 42
+py run_pilot_i1_trials.py --seed 42
+py run_project_trials.py --days 30 --seed 42
+py run_hydrology_trials.py --days 30
+py run_affordance_trials.py --days 30
+py run_aqueous_echo_trials.py --days 30 --seed 42
+```
+
+Builder results:
+
+- complete offline suite: **158 tests, OK**;
+- frozen Pilot I0: **13/13 LAW**;
+- frozen Pilot I1: **21/21 LAW**;
+- frozen D.2.x regressions: **10/10, 19/19, 26/26, 26/26 LAW**.
+
+I1 is a frozen internal terminal harness. It is not the visual external
+playtest, and Nereid and Trade House do not yet have active canonical pilot
+minds. See `specs/WORLD_ZERO_PILOT_0_1_I1_INTERNAL_PLAYABLE_LOOP.md` and
+`acceptance/PILOT_0_1_I1_ACCEPTANCE.md`.
+
+---
+
+# World Zero Pilot 0.1 — I0 Death God Integration Spike
+
+**Status:** user-local accepted and frozen on 2026-09-04. The seam is additive
+over the frozen V0.0-D.2.3 baseline.
+
+I0 is the smallest executable seam between the frozen D.1.4.2 God runtime and
+the D.2.x physical world. It does not attempt to build the complete Ash Valley
+pilot yet.
+
+The focal chain is:
+
+```text
+Arra inspects an ordinary-looking bank
+    -> private local percept owned by Arra
+    -/-> automatic divine knowledge
+
+Arra addresses Death
+    -> objective prayer event in the existing Ledger
+    -> existing Herald/Epistemic routing, if perception is not opposed
+    -> bounded DivineKnowledge for god_death
+    -> one existing SEND_PROBE inquiry
+    -> optional mortal reply as fallible testimony
+```
+
+`PilotSession` is a thin composition root. It reuses one `WorldState`, one
+`EventLedger`, the existing `LocalPerceptionStore`, the existing
+`WorldProcessRuntime`, `ProjectRuntime`, `DivineRuntime` and authoritative
+resolvers. `PilotClock` has no separate time state; it delegates to
+`WorldState.advance` and then schedules Project and Divine work at that same
+authoritative minute.
+
+The God of Death has an independent persistent motive around truthful memory,
+attribution and death boundaries. It receives neither Arra's bank percept nor
+objective Burial, Hydrology or Aqueous Echo state. A metaphysical veil can make
+it miss the prayer, and Arra can give it false testimony without the server
+marking that statement true.
+
+Arra is deliberately registered with ordinary `sight` only. She has no
+`water_sense`; the Player-facing bank observation contains ordinary surface
+cues and never the Echo vocabulary or formula.
+
+Run the frozen I0 gate and all earlier frozen regressions:
+
+```powershell
+py -m unittest discover -s tests -q
+py run_pilot_i0_trials.py --seed 42
+py run_project_trials.py --days 30 --seed 42
+py run_hydrology_trials.py --days 30
+py run_affordance_trials.py --days 30
+py run_aqueous_echo_trials.py --days 30 --seed 42
+```
+
+Accepted local results:
+
+- complete offline suite: **146 tests, OK**;
+- Pilot I0: **13/13 LAW**;
+- frozen regressions: **10/10, 19/19, 26/26, 26/26 LAW**.
+
+The user reproduced the local gate and explicitly accepted and froze I0 on
+2026-09-04. The detailed contract lives in
+`specs/WORLD_ZERO_PILOT_0_1_I0_DEATH_GOD_INTEGRATION.md` and the builder record
+in `acceptance/PILOT_0_1_I0_ACCEPTANCE.md`.
+
+---
 
 # World Zero V0.0-D.2.3 — Aqueous Silver Echo
 

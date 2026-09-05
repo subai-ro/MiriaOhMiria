@@ -6,7 +6,7 @@ import math
 from dataclasses import dataclass, field
 from enum import Enum
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, Callable
 
 from ..ledger import EventLedger, WorldEvent
 from ..materials import MATERIAL_CONTACT_SCHEMA
@@ -671,6 +671,8 @@ class AqueousEchoSenseBridge:
         ledger: EventLedger,
         echo: AqueousSilverEchoProcess,
         affordances: PhysicalAffordanceBridge,
+        *,
+        advance_time: Callable[[int], None] | None = None,
     ) -> None:
         if echo.world is not world or echo.ledger is not ledger:
             raise ValueError("echo sensing must share world and ledger with the echo process")
@@ -681,6 +683,7 @@ class AqueousEchoSenseBridge:
         self.echo = echo
         self.affordances = affordances
         self.perceptions: LocalPerceptionStore = affordances.perceptions
+        self._advance_time = advance_time or world.advance
         self._traces: list[EchoSenseTrace] = []
 
     @property
@@ -710,7 +713,7 @@ class AqueousEchoSenseBridge:
             )
 
         start_minute = self.world.game_minute
-        self.world.advance(ECHO_SENSE_DURATION_MINUTES)
+        self._advance_time(ECHO_SENSE_DURATION_MINUTES)
         source_hash = self.echo.state.state_hash()
         band = self.echo.state.band_states[node_id]
         movement = self._movement_cue(node_id, band)
@@ -892,5 +895,13 @@ def create_silver_thread_echo_sense_bridge(
     ledger: EventLedger,
     echo: AqueousSilverEchoProcess,
     affordances: PhysicalAffordanceBridge,
+    *,
+    advance_time: Callable[[int], None] | None = None,
 ) -> AqueousEchoSenseBridge:
-    return AqueousEchoSenseBridge(world, ledger, echo, affordances)
+    return AqueousEchoSenseBridge(
+        world,
+        ledger,
+        echo,
+        affordances,
+        advance_time=advance_time,
+    )

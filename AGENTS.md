@@ -34,6 +34,19 @@ not describe the current executable version.
 - D.2.2 Physical Affordances + Local Perception: frozen and user-local accepted.
 - D.2.3 Aqueous Silver Echo: frozen and user-local accepted on 2026-08-15
   after 139 tests and LAW 10/10, 19/19, 26/26, 26/26.
+- Pilot 0.1 I0 Death God integration seam: frozen and user-local accepted on
+  2026-09-04 after 146 tests, I0 LAW 13/13, and all earlier frozen regressions.
+- Pilot 0.1 I1 internal playable loop: frozen and user-local accepted on
+  2026-09-05 after guided play, 158 tests, I1 LAW 21/21, frozen I0 LAW 13/13,
+  and all earlier frozen regressions.
+- Pilot I3-N/N0 scheduling spike: user-accepted on 2026-09-05 with 18 new
+  tests, 176 total and all frozen gates green. Not declared frozen.
+  N1–N3 are now an offline candidate: 31 new tests, 207 total, 12/12 E2E and
+  all frozen gates green at that review. The user subsequently authorized N4's
+  initial local batch; all 72 calls / 18 runs completed and NEURAL FAILED:
+  6/68 ordinary decisions valid, 18/18 exact replays. The harness adds 13 tests
+  (220 total). Stop before correction/retry; no further provider approval,
+  model substitution or acceptance/freeze is implied. See acceptance E.1.
 
 Do not call any future candidate frozen, accepted, or released until the user
 explicitly accepts the required local gates.
@@ -101,19 +114,93 @@ Equivalent individual commands:
     py run_affordance_trials.py --days 30
     py run_aqueous_echo_trials.py --days 30 --seed 42
 
-Expected results:
+Expected current offline results with frozen I1, accepted N0 and the N4 harness:
 
-- 139 unit tests, OK
+- 220 unit tests, OK
 - PersistentProject: 10/10 LAW
 - Hydrology: 19/19 LAW
 - Affordances + Local Perception: 26/26 LAW
 - Aqueous Silver Echo: 26/26 LAW
 
 D.2.3 reproduced all five results on the user machine and was explicitly
-accepted and frozen on 2026-08-15.
+accepted and frozen on 2026-08-15, when the complete suite contained 139 tests.
+The additional seven I0 tests account for its frozen total of 146. Frozen I1
+adds twelve tests, producing its frozen total of 158. N0 added eighteen
+scheduling tests (176 at acceptance). N1–N3 added 31 (207 at their review).
+The initial N4 experiment harness adds 13 offline tests, producing 220 now.
 
 D.2.3 is entirely offline. It requires no Ollama process, API key, or package
 installation.
+
+## Pilot 0.1 I0 verification
+
+On Windows PowerShell:
+
+    py -m unittest discover -s tests -q
+    py run_pilot_i0_trials.py --seed 42
+
+Expected results:
+
+- 220 unit tests, OK in the current worktree; I0 froze at 146
+- Pilot I0: 13/13 LAW
+
+I0 is entirely offline. It requires no Ollama process, API key, network
+service, or package installation.
+
+## Pilot 0.1 I1 verification
+
+On Windows PowerShell:
+
+    py -m unittest discover -s tests -q
+    py run_pilot_i0_trials.py --seed 42
+    py run_pilot_i1_trials.py --seed 42
+
+Expected results:
+
+- 220 unit tests, OK; I1 froze at 158
+- frozen Pilot I0: 13/13 LAW
+- frozen Pilot I1: 21/21 LAW
+
+The internal playable loop starts with:
+
+    py play_pilot_i1.py
+
+I1 is entirely offline and uses only the Python standard library.
+
+## Pilot I3-N / N0 verification
+
+    py -m unittest discover -s tests -p test_pilot_n0.py -v
+
+Expected: 18 N0 tests, OK; then run the complete 220-test suite and all six
+frozen LAW gates above. The N0 result is a feasibility proof, not acceptance of
+the full I3-N contract, canonical cognition or the external pilot.
+
+`serial_actions=True` is opt-in on the existing pilot factories. In that mode,
+route timed requests through `PilotSession.perform` / `sense_echo`; do not call
+timed bridges directly without the whole-action guard. Preserve the default
+frozen I1 mode, and keep all N0 scheduling doubles inside tests.
+
+## Pilot I3-N / N1–N3 candidate verification
+
+    py -m unittest discover -s tests -p test_pilot_nereid.py -v
+    py run_pilot_nereid_trials.py --seed 42
+
+Expected: 31 tests (one named case per N01–N28 plus three extra boundaries),
+12/12 E2E checks; then all 220 tests and the frozen gates. Lab policies belong
+only in tests or the explicitly labelled acceptance runner, never a playable
+entry-point registry. The opt-in factory requires an explicit transport.
+Creator HTML is post-session, not an external visual Player View/HUMAN pass.
+
+## Pilot I3-N / N4 harness verification
+
+    py -m unittest discover -s tests -p test_pilot_nereid_neural.py -v
+
+Expected: 13 offline tests; then the complete suite and frozen gates above.
+They use labelled doubles and never need a running provider. The initial real
+N4 batch is complete and failed (72 calls; 6/68 ordinary reviews valid). Its
+local artifact directory must not be reused or overwritten. Do not repeat the
+real runner merely to verify a checkout or transfer. Correction and a retry
+experiment need separate approval; see spec 12 and acceptance E.1.
 
 ## Neural work
 
@@ -122,11 +209,15 @@ context 8192. Offline neural tests use doubles and must not call a provider.
 Do not silently substitute a different model or change the baseline parameters.
 Real-model trials require an explicit experimental plan and user approval.
 
-The next allowed stage is design-first P5 canonical model-backed Nereid
-cognition. Its first artifact must be a design and acceptance contract, not
-implementation code. P5 must consume bounded private evidence, issue intents
-through existing resolvers, tolerate ignorance and misinterpretation, and
-remain free to ignore the silver echo.
+The I3-N design and acceptance contract exist under specs/ and acceptance/.
+N0 is user-accepted. N1–N3 owned evidence, bounded attempts and settled
+observation/replay are builder-verified and awaiting the user's review.
+Offline doubles are not canonical cognition or permission to run a provider.
+Canonical model-backed cognition
+remains separately gated: it must
+consume bounded private evidence, issue intents through existing resolvers,
+tolerate ignorance and misinterpretation, and remain free to ignore the silver
+echo.
 
 ## Definition of done
 

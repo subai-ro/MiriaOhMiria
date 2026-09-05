@@ -1,4 +1,4 @@
-"""World Zero V0.0-D.2.3: deterministic aqueous echo hidden metaphysics."""
+"""World Zero: frozen D.2.3/I0 baseline plus Pilot 0.1 I1 candidate."""
 
 from .attention import AttentionDirective, PersonalAttentionField
 from .affordances import (
@@ -101,6 +101,31 @@ from .projects import (
     seed_silver_thread_projects,
 )
 from .provenance import CausalEdge, CausalEdgeKind, CausalTrace, DecisionTrace, IntentTrace, ResolutionTrace
+from .pilot import (
+    DEATH_PROJECT_ID,
+    AshValleyDeathBrain,
+    PilotClock,
+    PilotSession,
+    create_pilot_i0_session,
+    inspect_arra_bank,
+)
+from .pilot_playable import (
+    GALLERY_SITE,
+    MOVE_DURATION_MINUTES,
+    PILOT_I1_PREHISTORY_MINUTES,
+    PILOT_I1_SITES,
+    UPPER_REACH_SITE,
+    AshValleyI1DeathBrain,
+    PilotCommandResult,
+    PilotLoop,
+    PilotMovementResult,
+    PilotNavigation,
+    PilotPlayerView,
+    PilotSite,
+    create_pilot_i1_loop,
+    render_player_journal,
+    render_player_view,
+)
 from .mysteries import (
     DivineMysteryStore,
     DivineVeiledHypothesis,
@@ -116,6 +141,8 @@ __all__ = [
     "ActionType",
     "Actor",
     "ActorKind",
+    "AshValleyDeathBrain",
+    "AshValleyI1DeathBrain",
     "AQUEOUS_ECHO_TICK_MINUTES",
     "AqueousEchoSenseBridge",
     "AqueousEchoState",
@@ -144,9 +171,11 @@ __all__ = [
     "DEFAULT_LOCAL_CONTEXT_TOKENS",
     "DEFAULT_LOCAL_MODEL",
     "DEFAULT_OPENAI_MODEL",
+    "DEATH_PROJECT_ID",
     "EvidenceDirection",
     "GalleryRouteState",
     "GalleryState",
+    "GALLERY_SITE",
     "GALLERY_TARGET",
     "GATE_SITE",
     "GATE_TARGET",
@@ -167,6 +196,7 @@ __all__ = [
     "MaterialCatalog",
     "MaterialConstituent",
     "MaterialMediumContact",
+    "MOVE_DURATION_MINUTES",
     "NeuralDeathGodBrain",
     "NeuralGodConfig",
     "OLLAMA_CHAT_ENDPOINT",
@@ -174,6 +204,16 @@ __all__ = [
     "OllamaChatTransport",
     "OpenAIResponsesTransport",
     "PersonalAttentionField",
+    "PILOT_I1_PREHISTORY_MINUTES",
+    "PILOT_I1_SITES",
+    "PilotCommandResult",
+    "PilotClock",
+    "PilotLoop",
+    "PilotMovementResult",
+    "PilotNavigation",
+    "PilotPlayerView",
+    "PilotSession",
+    "PilotSite",
     "ProcessRun",
     "PersistentProject",
     "PersistentProjectStore",
@@ -205,6 +245,7 @@ __all__ = [
     "SubjectivePercept",
     "SubjectiveWorldView",
     "TRIAL_IDS",
+    "UPPER_REACH_SITE",
     "WorldEngine",
     "WorldObject",
     "WorldState",
@@ -216,11 +257,16 @@ __all__ = [
     "create_prototype_divine_runtime",
     "create_local_death_god_brain",
     "create_openai_death_god_brain",
+    "create_pilot_i0_session",
+    "create_pilot_i1_loop",
     "create_silver_thread_affordance_bridge",
     "create_default_material_catalog",
     "create_silver_thread_aqueous_echo",
     "create_silver_thread_echo_sense_bridge",
     "create_silver_thread_hydrology",
     "create_world",
+    "inspect_arra_bank",
+    "render_player_journal",
+    "render_player_view",
     "seed_silver_thread_projects",
 ]
