@@ -248,6 +248,7 @@ class PilotNavigation:
 class PilotPlayerView:
     time: str
     location: str
+    location_id: str
     description: str
     visible_subjects: tuple[str, ...]
     visible_objects: tuple[str, ...]
@@ -260,6 +261,7 @@ class PilotPlayerView:
         return {
             "time": self.time,
             "location": self.location,
+            "location_id": self.location_id,
             "description": self.description,
             "visible_subjects": list(self.visible_subjects),
             "visible_objects": list(self.visible_objects),
@@ -337,9 +339,12 @@ class PilotLoop:
         )
         if self._latest_unanswered_probe_ref() is not None:
             actions.append("Answer the grave-cold voice")
+        if site.site_id == GATE_SITE:
+            actions.append("Work the gate's silt")
         return PilotPlayerView(
             time=self.session.world.formatted_time,
             location=site.name,
+            location_id=site.site_id,
             description=site.description,
             visible_subjects=visible_subjects,
             visible_objects=site.visible_objects,
@@ -379,6 +384,25 @@ class PilotLoop:
         destination_id = self._SITE_ALIASES.get(key, key)
         result = self.navigation.move(destination_id)
         return PilotCommandResult(result.ok, result.message, result.duration_minutes)
+
+    @_player_action
+    def work_gate_silt(self, argument: str = "") -> PilotCommandResult:
+        if self.navigation.current_site.site_id != GATE_SITE:
+            return PilotCommandResult(False, "You can only work on the gate silt from the gate itself.")
+        effort = self._parse_effort(argument)
+        if effort is None:
+            return PilotCommandResult(False, "Effort must be a number between 0 and 1, for example: work gate 0.5.")
+        result = self.session.perform(
+            PhysicalActionRequest(
+                "arra",
+                PhysicalActionType.SHIFT_LOCAL_SILT,
+                GATE_TARGET,
+                params={"effort": effort},
+            )
+        )
+        if not result.ok:
+            return PilotCommandResult(False, result.message)
+        return PilotCommandResult(True, result.message, result.duration_minutes)
 
     @_player_action
     def pray_to_death(self) -> PilotCommandResult:
@@ -447,6 +471,10 @@ class PilotLoop:
             return self.move(argument)
         if verb in {"pray", "p"}:
             return self.pray_to_death()
+        if verb in {"map", "viz", "v"}:
+            return PilotCommandResult(True, "\n".join(render_player_map(self.player_view())))
+        if verb in {"work", "shift", "clear"}:
+            return self.work_gate_silt(argument)
         if verb in {"wait", "w"}:
             if not argument:
                 return self.wait()
@@ -462,8 +490,8 @@ class PilotLoop:
         if verb in {"help", "h", "?"}:
             return PilotCommandResult(
                 True,
-                "Commands: look, inspect, go bank/gate/gallery, pray, wait [minutes], "
-                "answer <words>, journal, quit.",
+                "Commands: look, map, inspect, go bank/gate/gallery, work gate [effort], "
+                "pray, wait [minutes], answer <words>, journal, quit.",
             )
         return PilotCommandResult(False, "You cannot do that here. Type help.")
 
@@ -501,6 +529,27 @@ class PilotLoop:
                 return probe.probe_ref
         return None
 
+    @staticmethod
+    def _parse_effort(argument: str) -> float | None:
+        argument = " ".join(str(argument).strip().casefold().split())
+        if not argument:
+            return 1.0
+
+        allowed_tokens = {"gate", "silt", "debris", "throat", "work", "shift"}
+        for part in argument.split():
+            if part in allowed_tokens:
+                continue
+            try:
+                effort = float(part)
+            except (TypeError, ValueError):
+                continue
+            if not 0.0 < effort <= 1.0:
+                return None
+            return effort
+        if any(part in allowed_tokens for part in argument.split()):
+            return 1.0
+        return None
+
     def _site(self, site_id: str) -> PilotSite:
         return next(site for site in self.navigation.sites if site.site_id == site_id)
 
@@ -525,6 +574,7 @@ def create_pilot_i1_loop(
         {
             PhysicalActionType.INSPECT_GATE.value: 0.58,
             PhysicalActionType.SURVEY_GALLERY.value: 0.52,
+            PhysicalActionType.SHIFT_LOCAL_SILT.value: 0.35,
         }
     )
     if prehistory_minutes:
@@ -534,7 +584,8 @@ def create_pilot_i1_loop(
 
 
 def render_player_view(view: PilotPlayerView) -> str:
-    lines = [f"{view.time} - {view.location}", view.description]
+    lines = [f"{view.time} - {view.location}", *render_player_map(view)]
+    lines.append(view.description)
     if view.visible_subjects:
         lines.append("People here: " + ", ".join(view.visible_subjects))
     if view.visible_objects:
@@ -547,6 +598,23 @@ def render_player_view(view: PilotPlayerView) -> str:
     lines.extend(f"  - {item}" for item in view.available_actions)
     return "\n".join(lines)
 
+
+
+def render_player_map(view: PilotPlayerView) -> tuple[str, ...]:
+    reach = _map_node(UPPER_REACH_SITE, view.location_id, "The Underpeak Reach")
+    gate = _map_node(GATE_SITE, view.location_id, "The Sealed River Gate")
+    gallery = _map_node(GALLERY_SITE, view.location_id, "The Old Gallery")
+    return (
+        "Navigation map:",
+        f"{reach} -- walk -- {gate} -- walk -- {gallery}",
+        "  * = your current location",
+    )
+
+
+def _map_node(site_id: str, current_site_id: str, label: str) -> str:
+    if site_id == current_site_id:
+        return f"[{label}*]"
+    return f"[{label}]"
 
 def render_player_journal(view: PilotPlayerView) -> str:
     lines = _journal_lines(view)

@@ -103,6 +103,54 @@ class PilotI1PlayableLoopTests(unittest.TestCase):
         )
         self.assertTrue(loop.execute("look bank").ok)
 
+    def test_gate_silt_work_action_is_available_only_at_gate_and_has_effect(self) -> None:
+        loop = create_pilot_i1_loop()
+        before_remote = loop.session.hydrology.state.gate.debris_load
+
+        blocked = loop.execute("work")
+        self.assertFalse(blocked.ok)
+        self.assertIn("gate", blocked.message.casefold())
+
+        self.assertTrue(loop.move("gate").ok)
+        before = loop.session.hydrology.state.gate.debris_load
+        view = loop.player_view()
+        self.assertIn("Work the gate's silt", view.available_actions)
+
+        worked = loop.execute("work gate 0.6")
+        self.assertTrue(worked.ok)
+        self.assertIn("bounded tongue of silt", worked.message)
+        self.assertLess(loop.session.hydrology.state.gate.debris_load, before)
+        self.assertLess(loop.session.hydrology.state.gate.debris_load, before_remote)
+        self.assertIn("Work the gate's silt", loop.player_view().available_actions)
+
+        self.assertTrue(loop.execute("go bank").ok)
+        self.assertNotIn("Work the gate's silt", loop.player_view().available_actions)
+        self.assertFalse(loop.execute("work").ok)
+
+
+    def test_player_map_command_renders_navigation_and_preserves_time(self) -> None:
+        loop = create_pilot_i1_loop()
+        before = loop.session.world.game_minute
+
+        bank_map = loop.execute("map")
+        self.assertTrue(bank_map.ok)
+        self.assertIn("Navigation map:", bank_map.message)
+        self.assertIn(
+            "[The Underpeak Reach*] -- walk -- [The Sealed River Gate] -- walk -- [The Old Gallery]",
+            bank_map.message,
+        )
+        self.assertEqual(before, loop.session.world.game_minute)
+
+        self.assertTrue(loop.move("gate").ok)
+        gate_map = loop.execute("v")
+        self.assertTrue(gate_map.ok)
+        self.assertIn(
+            "[The Underpeak Reach] -- walk -- [The Sealed River Gate*] -- walk -- [The Old Gallery]",
+            gate_map.message,
+        )
+        self.assertEqual(before + 15, loop.session.world.game_minute)
+
+
     def test_journal_separates_owned_observations_received_words_and_own_replies(self) -> None:
         loop = create_pilot_i1_loop()
         self.assertTrue(loop.inspect().ok)
