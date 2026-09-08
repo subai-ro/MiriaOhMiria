@@ -149,6 +149,40 @@ class PilotI1PlayableLoopTests(unittest.TestCase):
         self.assertIn("Gate debris:", gate_map.message)
         self.assertEqual(before + 15, loop.session.world.game_minute)
 
+    def test_help_lists_probe_and_settle(self) -> None:
+        loop = create_pilot_i1_loop()
+        help_message = loop.execute("help").message
+        self.assertIn("probe", help_message)
+        self.assertIn("settle", help_message)
+
+
+    def test_probe_answer_settle_flow_is_explicit(self) -> None:
+        loop = create_pilot_i1_loop()
+        self.assertTrue(loop.pray_to_death().ok)
+        start_minute = loop.session.world.game_minute
+        self.assertTrue(loop.wait(60).ok)
+
+        self.assertEqual(start_minute + 60, loop.session.world.game_minute)
+
+        probe = loop.execute("probe")
+        self.assertTrue(probe.ok)
+        self.assertIn("Reply with", probe.message)
+
+        blocked_settle = loop.execute("settle")
+        self.assertFalse(blocked_settle.ok)
+        self.assertIn("probe", blocked_settle.message.casefold())
+
+        self.assertTrue(loop.answer("I saw exposed bones in the bank, and I think the dead are calling.").ok)
+
+        before = loop.session.world.game_minute
+        settled = loop.execute("settle 30")
+        self.assertTrue(settled.ok)
+        self.assertEqual(before + 30, loop.session.world.game_minute)
+
+        cleared_probe = loop.execute("probe")
+        self.assertFalse(cleared_probe.ok)
+
+
     def test_player_hud_command_renders_world_state_snapshot(self) -> None:
         loop = create_pilot_i1_loop()
         before = loop.session.world.game_minute

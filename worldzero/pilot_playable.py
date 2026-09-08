@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+import os
+import sys
 from dataclasses import dataclass, replace
 from functools import wraps
 from typing import Any
@@ -31,6 +33,32 @@ PILOT_I1_PREHISTORY_MINUTES = 12 * 60
 UPPER_REACH_SITE = "underpeak_upper_reach"
 GALLERY_SITE = GALLERY_TARGET
 MOVE_DURATION_MINUTES = 15
+
+_ANSI_RESET = "\x1b[0m"
+_ANSI_BOLD = "\x1b[1m"
+_ANSI_RED = "\x1b[31m"
+_ANSI_GREEN = "\x1b[32m"
+_ANSI_YELLOW = "\x1b[33m"
+_ANSI_BLUE = "\x1b[34m"
+_ANSI_MAGENTA = "\x1b[35m"
+_ANSI_CYAN = "\x1b[36m"
+
+
+# CLI helpers
+def _cli_colors_enabled() -> bool:
+    if os.environ.get("NO_COLOR"):
+        return False
+    return bool(getattr(sys.stdout, "isatty", lambda: False)())
+
+
+def _style(text: str, *codes: str) -> str:
+    if not text or not _cli_colors_enabled():
+        return text
+    return "".join(codes) + text + _ANSI_RESET
+
+
+def _section_header(text: str, icon: str = "[ ]", color: str = _ANSI_CYAN) -> str:
+    return _style(f"{icon} {text}", _ANSI_BOLD, color)
 
 
 @dataclass(frozen=True)
@@ -351,19 +379,25 @@ class PilotLoop:
             gate = self.session.hydrology.state.gate
             gate_debris_load = gate.debris_load
             gate_sluice_position = gate.sluice_position
-        probe_ref = self._latest_unanswered_probe_ref()
+        pending_probe = self._latest_unanswered_probe()
         project_statuses = tuple(
             f"{project.project_id}: {project.status.value}"
             for project in self.session.projects.projects
         )
         if not project_statuses:
             project_statuses = ("(no projects)",)
-        actions = ["Inspect this place", "Pray to Death", "Wait and let time pass"]
+        actions = [
+            "Inspect this place",
+            "Pray to Death",
+            "Settle the moment",
+            "Wait and let time pass",
+        ]
         actions.extend(
             f"Walk to {self._site(destination).name}"
             for destination in site.neighbor_ids
         )
-        if probe_ref is not None:
+        if pending_probe is not None:
+            actions.append("Probe the grave-cold voice")
             actions.append("Answer the grave-cold voice")
         if site.site_id == GATE_SITE:
             actions.append("Work the gate's silt")
@@ -377,7 +411,7 @@ class PilotLoop:
             gate_debris_load=gate_debris_load,
             gate_sluice_position=gate_sluice_position,
             project_statuses=project_statuses,
-            probe_pending=probe_ref is not None,
+            probe_pending=pending_probe is not None,
             visible_subjects=visible_subjects,
             visible_objects=site.visible_objects,
             observations=observations,
@@ -457,6 +491,34 @@ class PilotLoop:
             minutes_elapsed=elapsed,
         )
 
+    def probe(self) -> PilotCommandResult:
+        pending_probe = self._latest_unanswered_probe()
+        if pending_probe is None:
+            return PilotCommandResult(False, "No voice is currently asking for an answer.")
+        probe_ref, probe_message = pending_probe
+        return PilotCommandResult(
+            True,
+            f"{_style('[PROBE]', _ANSI_MAGENTA, _ANSI_BOLD)} {probe_ref}: {probe_message}\n"
+            "Reply with: answer <your words>.",
+        )
+
+    def settle(self, minutes: int = 60) -> PilotCommandResult:
+        if isinstance(minutes, bool) or not isinstance(minutes, int) or not 1 <= minutes <= 360:
+            return PilotCommandResult(False, "Choose a settle duration between 1 and 360 minutes.")
+        if self._latest_unanswered_probe_ref() is not None:
+            return PilotCommandResult(
+                False,
+                "A divine probe is waiting. Use `probe`, then `answer`, then `settle`.",
+            )
+        start = self.session.world.game_minute
+        self.session.advance(minutes)
+        elapsed = self.session.world.game_minute - start if self.session.clock.serial_actions else minutes
+        return PilotCommandResult(
+            True,
+            f"You settle for {elapsed} minutes while the world continues.",
+            minutes_elapsed=elapsed,
+        )
+
     @_player_action
     def answer(self, text: str) -> PilotCommandResult:
         probe_ref = self._latest_unanswered_probe_ref()
@@ -478,8 +540,7 @@ class PilotLoop:
         )
         if not result.ok:
             return PilotCommandResult(False, result.message)
-        self.session.advance(1)
-        return PilotCommandResult(True, "You answer the grave-cold voice.", minutes_elapsed=1)
+        return PilotCommandResult(True, "You answer the grave-cold voice.")
 
     def execute(self, command: str) -> PilotCommandResult:
         cleaned = " ".join(str(command).strip().split())
@@ -503,6 +564,16 @@ class PilotLoop:
             return self.move(argument)
         if verb in {"pray", "p"}:
             return self.pray_to_death()
+        if verb in {"probe"}:
+            return self.probe()
+        if verb in {"settle"}:
+            if not argument:
+                return self.settle()
+            try:
+                minutes = int(argument)
+            except ValueError:
+                return PilotCommandResult(False, "Settle time must be a whole number of minutes.")
+            return self.settle(minutes)
         if verb in {"map", "viz", "v"}:
             return PilotCommandResult(True, "\n".join(render_player_map(self.player_view())))
         if verb in {"hud", "status", "panel"}:
@@ -524,8 +595,8 @@ class PilotLoop:
         if verb in {"help", "h", "?"}:
             return PilotCommandResult(
                 True,
-                "Commands: look, map, hud, inspect, go bank/gate/gallery, work gate [effort], "
-                "pray, wait [minutes], answer <words>, journal, quit.",
+                "Commands: look, map, hud, probe, settle [minutes], inspect, go bank/gate/gallery, "
+                "work gate [effort], pray, wait [minutes], answer <words>, journal, quit.",
             )
         return PilotCommandResult(False, "You cannot do that here. Type help.")
 
@@ -550,7 +621,7 @@ class PilotLoop:
             message = f"You must be at {destination.name} before you can inspect it."
         return PilotCommandResult(False, message)
 
-    def _latest_unanswered_probe_ref(self) -> str | None:
+    def _latest_unanswered_probe(self) -> tuple[str, str] | None:
         answered = {
             str(event.data["response_to_probe_ref"])
             for event in self.session.ledger.events
@@ -560,8 +631,14 @@ class PilotLoop:
         }
         for probe in reversed(self.session.divine_runtime.gateway.probes_for("god_death")):
             if probe.target_actor_id == "arra" and probe.probe_ref not in answered:
-                return probe.probe_ref
+                return probe.probe_ref, probe.message
         return None
+
+    def _latest_unanswered_probe_ref(self) -> str | None:
+        pending = self._latest_unanswered_probe()
+        if pending is None:
+            return None
+        return pending[0]
 
     @staticmethod
     def _parse_effort(argument: str) -> float | None:
@@ -618,25 +695,32 @@ def create_pilot_i1_loop(
 
 
 def render_player_view(view: PilotPlayerView) -> str:
-    lines = [f"{view.time} - {view.location}", *render_player_status(view), *render_player_hud(view)]
+    lines = [
+        _section_header("PLAYER VIEW", "[VIEW]", _ANSI_MAGENTA),
+        f"{_style(view.time, _ANSI_BOLD, _ANSI_BLUE)} - {view.location}",
+    ]
+    lines.extend(render_player_hud(view))
     lines.extend(render_player_map(view))
+    lines.append(_section_header("SCENE", "[AREA]", _ANSI_GREEN))
     lines.append(view.description)
     if view.visible_subjects:
-        lines.append("People here: " + ", ".join(view.visible_subjects))
+        lines.append(_section_header("People", "[P]", _ANSI_YELLOW))
+        lines.append("  " + ", ".join(view.visible_subjects))
     if view.visible_objects:
-        lines.append("You can see: " + ", ".join(view.visible_objects))
+        lines.append(_section_header("Visible objects", "[O]", _ANSI_CYAN))
+        lines.append("  " + ", ".join(view.visible_objects))
     journal = _journal_lines(view)
     if journal:
-        lines.append("Your journal:")
+        lines.append(_section_header("Your journal", "[J]", _ANSI_MAGENTA))
         lines.extend(f"  {item}" for item in journal)
-    lines.append("Possible actions:")
+    lines.append(_section_header("Possible actions", "[A]", _ANSI_RED))
     lines.extend(f"  - {item}" for item in view.available_actions)
     return "\n".join(lines)
 
 
 def render_player_status(view: PilotPlayerView) -> tuple[str, ...]:
     exits = ", ".join(view.compass_neighbors) if view.compass_neighbors else "none"
-    status = ("Status:", f"  Nearby exits: {exits}")
+    status = (_section_header("Status:", "[STATUS]", _ANSI_BLUE), f"  Nearby exits: {exits}")
     metrics = []
     if view.gate_debris_load is not None:
         metrics.append(f"  Gate debris: {_percent(view.gate_debris_load)}")
@@ -649,8 +733,8 @@ def render_player_hud(view: PilotPlayerView) -> tuple[str, ...]:
     projects = ", ".join(view.project_statuses) if view.project_statuses else "none"
     probe = "pending" if view.probe_pending else "none"
     return (
-        "HUD:",
-        f"  Minute: {view.game_minute}",
+        _section_header("HUD:", "[HUD]", _ANSI_YELLOW),
+        f"  Minute: {_style(str(view.game_minute), _ANSI_GREEN, _ANSI_BOLD)}",
         f"  Projects: {projects}",
         f"  Unanswered probe: {probe}",
     )
@@ -664,24 +748,28 @@ def render_player_map(view: PilotPlayerView) -> tuple[str, ...]:
     reach = _map_node(UPPER_REACH_SITE, view.location_id, "The Underpeak Reach")
     gate = _map_node(GATE_SITE, view.location_id, "The Sealed River Gate")
     gallery = _map_node(GALLERY_SITE, view.location_id, "The Old Gallery")
+    status = render_player_status(view)
     return (
-        "Navigation map:",
+        status[0],
+        status[1],
+        *(f"  {item}" for item in status[2:]),
+        _section_header("Navigation map:", "[MAP]", _ANSI_BLUE),
         f"   {reach}",
-        "    |",
+        f"    {_style('|', _ANSI_CYAN)}",
         "    | 15m",
-        "    v",
+        f"    {_style('v', _ANSI_CYAN)}",
         f"   {gate}",
-        "    |",
+        f"    {_style('|', _ANSI_CYAN)}",
         "    | 15m",
-        "    v",
+        f"    {_style('v', _ANSI_CYAN)}",
         f"   {gallery}",
-        "  * = your current location",
+        f"  {_style('*', _ANSI_YELLOW)} = your current location",
     )
 
 
 def _map_node(site_id: str, current_site_id: str, label: str) -> str:
     if site_id == current_site_id:
-        return f"[{label}*]"
+        return _style(f"[{label}*]", _ANSI_GREEN, _ANSI_BOLD)
     return f"[{label}]"
 
 def render_player_journal(view: PilotPlayerView) -> str:
