@@ -250,6 +250,9 @@ class PilotPlayerView:
     location: str
     location_id: str
     description: str
+    compass_neighbors: tuple[str, ...]
+    gate_debris_load: float | None
+    gate_sluice_position: float | None
     visible_subjects: tuple[str, ...]
     visible_objects: tuple[str, ...]
     observations: tuple[str, ...]
@@ -263,6 +266,9 @@ class PilotPlayerView:
             "location": self.location,
             "location_id": self.location_id,
             "description": self.description,
+            "compass_neighbors": list(self.compass_neighbors),
+            "gate_debris_load": self.gate_debris_load,
+            "gate_sluice_position": self.gate_sluice_position,
             "visible_subjects": list(self.visible_subjects),
             "visible_objects": list(self.visible_objects),
             "observations": list(self.observations),
@@ -332,6 +338,13 @@ class PilotLoop:
             for text in (event.data.get("text"),)
             if isinstance(text, str) and text.strip()
         )
+        compass_neighbors = tuple(self._site(destination).name for destination in site.neighbor_ids)
+        gate_debris_load = None
+        gate_sluice_position = None
+        if site.site_id == GATE_SITE:
+            gate = self.session.hydrology.state.gate
+            gate_debris_load = gate.debris_load
+            gate_sluice_position = gate.sluice_position
         actions = ["Inspect this place", "Pray to Death", "Wait and let time pass"]
         actions.extend(
             f"Walk to {self._site(destination).name}"
@@ -346,6 +359,9 @@ class PilotLoop:
             location=site.name,
             location_id=site.site_id,
             description=site.description,
+            compass_neighbors=compass_neighbors,
+            gate_debris_load=gate_debris_load,
+            gate_sluice_position=gate_sluice_position,
             visible_subjects=visible_subjects,
             visible_objects=site.visible_objects,
             observations=observations,
@@ -584,7 +600,8 @@ def create_pilot_i1_loop(
 
 
 def render_player_view(view: PilotPlayerView) -> str:
-    lines = [f"{view.time} - {view.location}", *render_player_map(view)]
+    lines = [f"{view.time} - {view.location}", *render_player_status(view)]
+    lines.extend(render_player_map(view))
     lines.append(view.description)
     if view.visible_subjects:
         lines.append("People here: " + ", ".join(view.visible_subjects))
@@ -599,6 +616,20 @@ def render_player_view(view: PilotPlayerView) -> str:
     return "\n".join(lines)
 
 
+def render_player_status(view: PilotPlayerView) -> tuple[str, ...]:
+    exits = ", ".join(view.compass_neighbors) if view.compass_neighbors else "none"
+    status = ("Status:", f"  Nearby exits: {exits}")
+    metrics = []
+    if view.gate_debris_load is not None:
+        metrics.append(f"  Gate debris: {_percent(view.gate_debris_load)}")
+    if view.gate_sluice_position is not None:
+        metrics.append(f"  Gate sluice: {_percent(view.gate_sluice_position)} open")
+    return status + tuple(metrics)
+
+
+def _percent(value: float) -> str:
+    return f"{value * 100:.0f}%"
+
 
 def render_player_map(view: PilotPlayerView) -> tuple[str, ...]:
     reach = _map_node(UPPER_REACH_SITE, view.location_id, "The Underpeak Reach")
@@ -606,7 +637,15 @@ def render_player_map(view: PilotPlayerView) -> tuple[str, ...]:
     gallery = _map_node(GALLERY_SITE, view.location_id, "The Old Gallery")
     return (
         "Navigation map:",
-        f"{reach} -- walk -- {gate} -- walk -- {gallery}",
+        f"   {reach}",
+        "    |",
+        "    | 15m",
+        "    v",
+        f"   {gate}",
+        "    |",
+        "    | 15m",
+        "    v",
+        f"   {gallery}",
         "  * = your current location",
     )
 

@@ -134,20 +134,19 @@ class PilotI1PlayableLoopTests(unittest.TestCase):
 
         bank_map = loop.execute("map")
         self.assertTrue(bank_map.ok)
+        self.assertIn("Status:", bank_map.message)
+        self.assertIn("Nearby exits: The Sealed River Gate", bank_map.message)
         self.assertIn("Navigation map:", bank_map.message)
-        self.assertIn(
-            "[The Underpeak Reach*] -- walk -- [The Sealed River Gate] -- walk -- [The Old Gallery]",
-            bank_map.message,
-        )
+        self.assertIn("The Underpeak Reach*", bank_map.message)
+        self.assertIn("The Sealed River Gate", bank_map.message)
         self.assertEqual(before, loop.session.world.game_minute)
 
         self.assertTrue(loop.move("gate").ok)
         gate_map = loop.execute("v")
         self.assertTrue(gate_map.ok)
-        self.assertIn(
-            "[The Underpeak Reach] -- walk -- [The Sealed River Gate*] -- walk -- [The Old Gallery]",
-            gate_map.message,
-        )
+        self.assertIn("Nearby exits: The Underpeak Reach, The Old Gallery", gate_map.message)
+        self.assertIn("The Sealed River Gate*", gate_map.message)
+        self.assertIn("Gate debris:", gate_map.message)
         self.assertEqual(before + 15, loop.session.world.game_minute)
 
 
