@@ -149,6 +149,23 @@ class PilotI1PlayableLoopTests(unittest.TestCase):
         self.assertIn("Gate debris:", gate_map.message)
         self.assertEqual(before + 15, loop.session.world.game_minute)
 
+    def test_player_hud_command_renders_world_state_snapshot(self) -> None:
+        loop = create_pilot_i1_loop()
+        before = loop.session.world.game_minute
+
+        hud = loop.execute("hud")
+        self.assertTrue(hud.ok)
+        self.assertIn("HUD:", hud.message)
+        self.assertIn(f"Minute: {before}", hud.message)
+        self.assertIn("Projects:", hud.message)
+        self.assertIn("nereid_return_underpeak", hud.message)
+        self.assertIn("trade_house_underpeak_route", hud.message)
+        self.assertIn("Unanswered probe:", hud.message)
+        self.assertEqual(before, loop.session.world.game_minute)
+
+        self.assertIn("HUD:", render_player_view(loop.player_view()))
+
+
 
     def test_journal_separates_owned_observations_received_words_and_own_replies(self) -> None:
         loop = create_pilot_i1_loop()

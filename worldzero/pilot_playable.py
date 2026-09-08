@@ -250,9 +250,12 @@ class PilotPlayerView:
     location: str
     location_id: str
     description: str
+    game_minute: int
     compass_neighbors: tuple[str, ...]
     gate_debris_load: float | None
     gate_sluice_position: float | None
+    project_statuses: tuple[str, ...]
+    probe_pending: bool
     visible_subjects: tuple[str, ...]
     visible_objects: tuple[str, ...]
     observations: tuple[str, ...]
@@ -266,9 +269,12 @@ class PilotPlayerView:
             "location": self.location,
             "location_id": self.location_id,
             "description": self.description,
+            "game_minute": self.game_minute,
             "compass_neighbors": list(self.compass_neighbors),
             "gate_debris_load": self.gate_debris_load,
             "gate_sluice_position": self.gate_sluice_position,
+            "project_statuses": list(self.project_statuses),
+            "probe_pending": self.probe_pending,
             "visible_subjects": list(self.visible_subjects),
             "visible_objects": list(self.visible_objects),
             "observations": list(self.observations),
@@ -345,12 +351,19 @@ class PilotLoop:
             gate = self.session.hydrology.state.gate
             gate_debris_load = gate.debris_load
             gate_sluice_position = gate.sluice_position
+        probe_ref = self._latest_unanswered_probe_ref()
+        project_statuses = tuple(
+            f"{project.project_id}: {project.status.value}"
+            for project in self.session.projects.projects
+        )
+        if not project_statuses:
+            project_statuses = ("(no projects)",)
         actions = ["Inspect this place", "Pray to Death", "Wait and let time pass"]
         actions.extend(
             f"Walk to {self._site(destination).name}"
             for destination in site.neighbor_ids
         )
-        if self._latest_unanswered_probe_ref() is not None:
+        if probe_ref is not None:
             actions.append("Answer the grave-cold voice")
         if site.site_id == GATE_SITE:
             actions.append("Work the gate's silt")
@@ -359,9 +372,12 @@ class PilotLoop:
             location=site.name,
             location_id=site.site_id,
             description=site.description,
+            game_minute=self.session.world.game_minute,
             compass_neighbors=compass_neighbors,
             gate_debris_load=gate_debris_load,
             gate_sluice_position=gate_sluice_position,
+            project_statuses=project_statuses,
+            probe_pending=probe_ref is not None,
             visible_subjects=visible_subjects,
             visible_objects=site.visible_objects,
             observations=observations,
@@ -489,6 +505,8 @@ class PilotLoop:
             return self.pray_to_death()
         if verb in {"map", "viz", "v"}:
             return PilotCommandResult(True, "\n".join(render_player_map(self.player_view())))
+        if verb in {"hud", "status", "panel"}:
+            return PilotCommandResult(True, "\n".join(render_player_hud(self.player_view())))
         if verb in {"work", "shift", "clear"}:
             return self.work_gate_silt(argument)
         if verb in {"wait", "w"}:
@@ -506,7 +524,7 @@ class PilotLoop:
         if verb in {"help", "h", "?"}:
             return PilotCommandResult(
                 True,
-                "Commands: look, map, inspect, go bank/gate/gallery, work gate [effort], "
+                "Commands: look, map, hud, inspect, go bank/gate/gallery, work gate [effort], "
                 "pray, wait [minutes], answer <words>, journal, quit.",
             )
         return PilotCommandResult(False, "You cannot do that here. Type help.")
@@ -600,7 +618,7 @@ def create_pilot_i1_loop(
 
 
 def render_player_view(view: PilotPlayerView) -> str:
-    lines = [f"{view.time} - {view.location}", *render_player_status(view)]
+    lines = [f"{view.time} - {view.location}", *render_player_status(view), *render_player_hud(view)]
     lines.extend(render_player_map(view))
     lines.append(view.description)
     if view.visible_subjects:
@@ -625,6 +643,17 @@ def render_player_status(view: PilotPlayerView) -> tuple[str, ...]:
     if view.gate_sluice_position is not None:
         metrics.append(f"  Gate sluice: {_percent(view.gate_sluice_position)} open")
     return status + tuple(metrics)
+
+
+def render_player_hud(view: PilotPlayerView) -> tuple[str, ...]:
+    projects = ", ".join(view.project_statuses) if view.project_statuses else "none"
+    probe = "pending" if view.probe_pending else "none"
+    return (
+        "HUD:",
+        f"  Minute: {view.game_minute}",
+        f"  Projects: {projects}",
+        f"  Unanswered probe: {probe}",
+    )
 
 
 def _percent(value: float) -> str:
