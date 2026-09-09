@@ -20,16 +20,81 @@ python run_pilot_nereid_trials.py --seed 42
 python play_pilot_i1.py
 ```
 
-Current offline results: **220 tests, I0 13/13 LAW, I1 21/21 LAW, N1–N3 12/12
+You can also build and run a local Windows one-file executable from this entry point.
+
+### Basic exe packaging (Windows)
+
+#### 1) Build the exe
+```powershell
+# from repository root
+.\scripts\build_i1_exe.bat
+
+# or without scripts
+py -m pip install pyinstaller
+py -m PyInstaller --onefile --noconfirm --clean --name worldzero-i1-playable --distpath dist\i1-exe --workpath build\pyinstaller --specpath build\pyinstaller play_pilot_i1.py
+```
+
+This creates `dist\i1-exe\worldzero-i1-playable.exe`.
+
+#### 2) Run the built exe
+```powershell
+.\scripts\run_i1_exe.bat
+
+# or direct
+.\dist\i1-exe\worldzero-i1-playable.exe
+```
+
+
+### Visual Tkinter client (WASD / Arrow keys)
+
+```powershell
+.\scripts\build_i1_gui_exe.bat
+
+.\scripts\run_i1_gui_exe.bat
+```
+
+Controls: W/S or ↑/↓, action buttons for inspect, prayer, wait, settle, probe, answer, and gate work.
+
+This is the same I1 logic in a graphical window, without full command typing.
+Current offline results: **259 tests, I0 13/13 LAW, I1 21/21 LAW, N1–N3 12/12
 E2E**, with the four earlier frozen LAW gates also green. The playable entry
 is still the frozen terminal I1 harness, not the external visual pilot.
 
-**Current blocker:** the approved initial N4 real-model experiment completed
-and **failed**: 6/68 ordinary decisions valid (8.82%, required 90%), 72 total
-calls, 18/18 exact replays. The next proposed step is a clearer model-facing
-action contract, followed only with separate approval by one bounded retry.
-Neither correction nor repeat model calls are authorized by cloning/testing.
-See [the complete result and diagnosis](acceptance/PILOT_0_1_I3_N_ACCEPTANCE.md#e1-initial-n4-result-and-complete-batch-review--2026-09-05).
+**New opt-in internal entry (2026-09-06):** `play_pilot_nereid.py` connects the
+evaluated Nereid v2 to the same lawful player commands. The user authorized ONE
+joint session, at most 24 local calls including prehistory; 19 new offline tests
+pass. It saves command/call evidence and produces an offline replay and escaped
+Creator report after closing. It never installs a lab policy or changes frozen
+`play_pilot_i1.py`. While waiting for input, this test process does not simulate
+background time. The first session completed via `quit`: 12 recorded commands,
+one model call during prehistory, exact replay. The player observed no Nereid
+activity; she inspected water before entry and scheduled her next decision
+after the player left. This remains a product issue, not acceptance/freeze or
+HUMAN. The subsequent read-only audit is complete. See
+[the recovered tests, feedback and next plan](docs/handoffs/WORLD_ZERO_RECOVERY_2026_09_06.md)
+and acceptance section F.2.
+
+For an explicitly approved session only, choose a new output directory:
+
+```powershell
+py -u play_pilot_nereid.py --approved-local-playtest --output-dir local_acceptance/my_new_playtest
+```
+
+The flag acknowledges approval; it does not grant another session. See
+[the internal session contract](acceptance/PILOT_0_1_I3_N_ACCEPTANCE.md#f1-internal-interactive-seam--authorized-2026-09-06).
+
+**Latest N4 experiment:** a separately approved fresh v2 batch completed all
+72 calls / 18 histories: **64/68 ordinary decisions valid (94.12%, floor 90%)**,
+four overlong-text rejections, 18/18 exact saved replays. The 25 material
+attempts produced 19 bounded debris removals and six resource-blocked outcomes.
+Median call latency: 3.492 s; p95: 4.866 s. Structural/safety/replay criteria
+pass; inquiry, work and later reconsideration are observed, with remaining
+resource-awareness and prose/action consistency concerns. This is an
+**experimental candidate awaiting user review**, not acceptance/freeze or HUMAN.
+The initial failed series and the earlier timeout-stopped v2 retry are retained
+unchanged. No further run or playable entry is authorized by this result.
+Cloning/testing never authorizes provider calls.
+See [the complete fresh-run result and review](acceptance/PILOT_0_1_I3_N_ACCEPTANCE.md#e4-separately-authorized-fresh-v2-run--2026-09-05).
 
 Canon and current plans are included under `docs/canon/`, `docs/pilot/` and
 `specs/`; their precedence is in [CANON_SOURCE_ORDER.md](docs/CANON_SOURCE_ORDER.md).
