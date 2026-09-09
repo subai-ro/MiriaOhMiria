@@ -114,6 +114,20 @@ class PilotI1Gui:
         ttk.Label(hud, textvariable=self.hud_gate_var, font=("Segoe UI", 10)).grid(row=0, column=2, sticky="w")
         ttk.Label(hud, textvariable=self.hud_probe_var, font=("Segoe UI", 10)).grid(row=1, column=0, columnspan=3, sticky="w", pady=(4, 0))
 
+        actions_snapshot = ttk.Frame(right_panel)
+        actions_snapshot.grid(row=2, column=0, sticky="ew", padx=8, pady=(0, 8))
+        actions_snapshot.columnconfigure(0, weight=1)
+        ttk.Label(actions_snapshot, text="Available actions:", font=("Segoe UI", 10, "bold")).pack(anchor="w")
+        self.actions_list = scrolledtext.ScrolledText(
+            actions_snapshot,
+            width=72,
+            height=6,
+            wrap="word",
+            font=("Consolas", 10),
+            state="disabled",
+        )
+        self.actions_list.pack(fill="both", expand=True, pady=(4, 0))
+
         controls = ttk.Frame(self.root)
         controls.pack(fill="x", padx=10, pady=(0, 10))
         controls.columnconfigure(0, weight=1)
@@ -124,27 +138,36 @@ class PilotI1Gui:
 
         move_box = ttk.LabelFrame(controls, text="Movement")
         move_box.grid(row=0, column=0, sticky="nsew", padx=(0, 4), ipadx=3, ipady=3)
-        ttk.Button(move_box, text="↑ W / Up", command=lambda: self._move("up")).pack(fill="x", padx=6, pady=(6, 2))
-        ttk.Button(move_box, text="↓ S / Down", command=lambda: self._move("down")).pack(fill="x", padx=6, pady=(0, 6))
+        self.move_up_button = ttk.Button(
+            move_box, text="↑ W / Up", command=lambda: self._move("up")
+        )
+        self.move_up_button.pack(fill="x", padx=6, pady=(6, 2))
+        self.move_down_button = ttk.Button(
+            move_box, text="↓ S / Down", command=lambda: self._move("down")
+        )
+        self.move_down_button.pack(fill="x", padx=6, pady=(0, 6))
 
         action_box = ttk.LabelFrame(controls, text="Actions")
         action_box.grid(row=0, column=1, sticky="nsew", padx=4)
-        ttk.Button(action_box, text="Inspect", command=self._inspect).pack(fill="x", padx=6, pady=(6, 2))
-        ttk.Button(action_box, text="Pray", command=self._pray).pack(fill="x", padx=6, pady=2)
-        ttk.Button(action_box, text="Wait 60m", command=lambda: self._wait(60)).pack(fill="x", padx=6, pady=2)
-        ttk.Button(action_box, text="Settle 60m", command=lambda: self._settle(60)).pack(fill="x", padx=6, pady=(2, 6))
+        self.inspect_button = ttk.Button(action_box, text="Inspect", command=self._inspect)
+        self.inspect_button.pack(fill="x", padx=6, pady=(6, 2))
+        self.pray_button = ttk.Button(action_box, text="Pray", command=self._pray)
+        self.pray_button.pack(fill="x", padx=6, pady=2)
+        self.wait_button = ttk.Button(action_box, text="Wait 60m", command=lambda: self._wait(60))
+        self.wait_button.pack(fill="x", padx=6, pady=2)
+        self.settle_button = ttk.Button(
+            action_box, text="Settle 60m", command=lambda: self._settle(60)
+        )
+        self.settle_button.pack(fill="x", padx=6, pady=(2, 6))
 
         probe_box = ttk.LabelFrame(controls, text="Divine")
         probe_box.grid(row=0, column=2, sticky="nsew", padx=4)
-        ttk.Button(probe_box, text="Reveal probe", command=self._probe).pack(fill="x", padx=6, pady=(6, 2))
-        ttk.Button(probe_box, text="Settle 60m", command=lambda: self._settle(60)).pack(fill="x", padx=6, pady=(2, 2))
-
-        answer_row = ttk.Frame(probe_box)
-        answer_row.pack(fill="x", padx=6, pady=(2, 6))
-        ttk.Label(answer_row, text="Answer:").pack(side="left")
-        self.answer_entry = ttk.Entry(answer_row)
-        self.answer_entry.pack(side="left", fill="x", expand=True, padx=(6, 0))
-        ttk.Button(answer_row, text="Send", command=self._answer).pack(side="right", padx=(6, 0))
+        self.probe_button = ttk.Button(probe_box, text="Reveal probe", command=self._probe)
+        self.probe_button.pack(fill="x", padx=6, pady=(6, 2))
+        self.answer_entry = ttk.Entry(probe_box)
+        self.answer_entry.pack(fill="x", padx=6, pady=(2, 2))
+        self.answer_button = ttk.Button(probe_box, text="Answer", command=self._answer)
+        self.answer_button.pack(fill="x", padx=6, pady=(0, 6))
 
         self.gate_box = ttk.LabelFrame(controls, text="Gate work")
         self.gate_box.grid(row=0, column=3, sticky="nsew", padx=4)
@@ -174,7 +197,8 @@ class PilotI1Gui:
         ttk.Label(
             status_box,
             text=(
-                "Move: W or S, or arrow keys (up/down). Actions are bound to buttons. "
+                "Move: W/S or ↑/↓, and pray -> probe -> answer -> settle flow. "
+                "The settle button is disabled while a probe is unanswered. "
                 "Press Enter in the answer field to send your response."
             ),
             wraplength=920,
@@ -196,6 +220,19 @@ class PilotI1Gui:
     def _on_effort_change(self, value: str) -> None:
         self._effort = max(0.1, min(1.0, float(value)))
         self.effort_label.config(text=f"{self._effort:.2f}")
+
+    def _set_widget_state(self, widget: tk.Widget, enabled: bool) -> None:
+        if isinstance(widget, (ttk.Button, ttk.Checkbutton, ttk.Radiobutton, ttk.Scale)):
+            widget.state(["!disabled"] if enabled else ["disabled"])
+            return
+        if isinstance(widget, (ttk.Entry, tk.Entry)):
+            widget.configure(state="normal" if enabled else "disabled")
+            return
+        if isinstance(widget, tk.Widget):
+            try:
+                widget.state(["!disabled"] if enabled else ["disabled"])
+            except Exception:
+                pass
 
     def _append_log(self, text: str) -> None:
         self.info_text.config(state="normal")
@@ -316,6 +353,33 @@ class PilotI1Gui:
         current = " *" if site_id == current_id else ""
         return f"[{self._SITE_LABELS.get(site_id, site_id)}{current}]"
 
+    def _set_button_matrix(self, view) -> None:
+        self._set_widget_state(self.move_up_button, view.location_id != UPPER_REACH_SITE)
+        self._set_widget_state(self.move_down_button, view.location_id != GALLERY_SITE)
+        self._set_widget_state(self.inspect_button, True)
+        self._set_widget_state(self.pray_button, True)
+
+        self._set_widget_state(self.wait_button, True)
+
+        can_settle = not view.probe_pending
+        self._set_widget_state(self.settle_button, can_settle)
+        self._set_widget_state(self.probe_button, view.probe_pending)
+
+        self._set_widget_state(self.answer_entry, view.probe_pending)
+        self._set_widget_state(self.answer_button, view.probe_pending)
+        if not view.probe_pending:
+            self.answer_entry.delete(0, "end")
+
+        can_work_gate = view.location_id == GATE_SITE
+        self._set_widget_state(self.gate_work_button, can_work_gate)
+
+    def _render_available_actions(self, view) -> None:
+        lines = [" - " + action for action in view.available_actions] if view.available_actions else ["  (none)"]
+        self.actions_list.config(state="normal")
+        self.actions_list.delete("1.0", "end")
+        self.actions_list.insert("1.0", "\n".join(lines))
+        self.actions_list.config(state="disabled")
+
     def _refresh(self, force_log: bool = False) -> None:
         view = self.loop.player_view()
         self.time_var.set(f"Time: {view.time}")
@@ -349,11 +413,8 @@ class PilotI1Gui:
             self._set_scene_text("\n".join(scene_lines + ["", "Press controls or keys to start action."]))
 
         self._redraw_map(view)
-        can_work_gate = view.location_id == GATE_SITE
-        if can_work_gate:
-            self.gate_work_button.state(["!disabled"])
-        else:
-            self.gate_work_button.state(["disabled"])
+        self._render_available_actions(view)
+        self._set_button_matrix(view)
 
     def _redraw_map(self, view) -> None:
         self.canvas.delete("all")
