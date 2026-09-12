@@ -51,8 +51,38 @@ or a canonical neural/HUMAN pass. A lab double never changes that status.
 
 The explicitly approved initial N4 local-model batch completed on 2026-09-05
 and failed: 6/68 ordinary decisions valid, 72 total calls, 18/18 exact replays.
-The current 220-test offline suite includes 13 new harness tests, not a neural
+The then-current 220-test offline suite included 13 new harness tests, not a neural
 acceptance. No correction/retry or later acceptance/freeze is implied.
+
+The user subsequently approved a v2 action-interface correction and ONE retry
+on the unchanged model/settings. The correction adds 20 offline tests (240
+total), preserving every frozen gate. That retry stopped at call 16 on the
+180-second provider timeout: all 15 returned decisions valid, seven resolved
+physical work actions, four recorded histories with exact saved replay. This
+partial experiment is not a NEURAL/HUMAN pass or acceptance/freeze, and its
+unused budget does not authorize resuming or another batch. The original failed
+evidence remains unchanged; see spec 14 and acceptance E.3 for that stop.
+
+After that review, the user explicitly authorized ONE fresh v2 run (spec 15).
+It completed 72 calls / 18 histories: 64/68 ordinary decisions valid (94.12%),
+four overlong-text rejects and 18/18 exact saved replays. The structural,
+safety and replay criteria pass; minimal inquiry/work/reconsideration examples
+are present with quality reservations (acceptance E.4). The offline suite
+remains 240 tests, all frozen gates green. This is an experimental candidate,
+not user acceptance/freeze, consistent canonical cognition or HUMAN. Neither
+prior failure is overwritten and no further provider run is authorized.
+
+On 2026-09-06 the user explicitly approved a separate internal Nereid playable
+entry and ONE joint session (spec 16 / acceptance F.1). The entry is builder-
+verified with 19 new tests, 259 total and all frozen gates green. It preserves
+the evaluated v2 mind and frozen I1, limits the session to 24 calls including
+prehistory, and keeps Creator diagnostics separate. This latest decision
+authorizes the internal seam/session, not a new N4 batch or acceptance/freeze.
+The guided session later ended via quit, with exact replay but no Nereid
+activity visible to the player. The user reported that absence; a subsequent
+read-only observable-life audit is complete, with implementation still pending.
+See acceptance F.2 and docs/handoffs/WORLD_ZERO_RECOVERY_2026_09_06.md for the
+recovered continuation. The external visual HUMAN gate remains open.
 
 The old documents remain authoritative for enduring principles such as limited
 knowledge, causal autonomy, non-player-centered history, and the separation

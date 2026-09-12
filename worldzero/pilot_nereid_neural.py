@@ -21,7 +21,7 @@ from .affordances import GATE_SITE, GATE_TARGET, PhysicalActionRequest, Physical
 from .neural import (DEFAULT_LOCAL_MODEL, OLLAMA_CHAT_ENDPOINT, NeuralModelResponse,
                      NeuralProviderError, NeuralResponseError, OllamaChatTransport)
 from .pilot_nereid import (INTENT_TYPE, NEREID, NEREID_PROJECT, NereidEvidenceProjection,
-                          NereidIntentResolver, bounded_snapshot, install_nereid_cognition)
+                          NereidIntentResolver, prepare_nereid_request, install_nereid_cognition)
 from .pilot_nereid_creator import creator_graph
 from .pilot_playable import create_pilot_i1_loop
 from .processes.aqueous_echo import EchoSenseRequest
@@ -78,9 +78,10 @@ class EvidenceBudget:
 
 
 class AuditedTransport:
-    def __init__(self, provider, budget: EvidenceBudget, *, run_id, projection, progress=None):
+    def __init__(self, provider, budget: EvidenceBudget, *, run_id, projection, progress=None, contract_version=1):
         self.provider, self.budget = provider, budget
         self.run_id, self.projection, self.progress = run_id, projection, progress
+        self.contract_version = contract_version
         self.records = []
         self.active_prefix = None
         if isinstance(provider, OllamaChatTransport):
@@ -105,8 +106,9 @@ class AuditedTransport:
             raise ExperimentStop(self.budget.fatal)
         # Trusted audit compares exact allowed projection before any provider
         # sees it; the provider itself still receives only NeuralModelRequest.
-        expected = bounded_snapshot(self.projection.snapshot()).payload
-        if request.input_payload != expected:
+        expected_request, delivered = prepare_nereid_request(self.projection.snapshot(), contract_version=self.contract_version)
+        expected = delivered.payload
+        if asdict(request) != asdict(expected_request):
             self.budget.fatal = "private projection mismatch"
             raise ExperimentStop(self.budget.fatal)
         native = self.provider.build_payload(request) if isinstance(self.provider, OllamaChatTransport) else None
@@ -263,9 +265,12 @@ class RecordedN4Transport:
 def replay_run(result):
     replay = prepare_scenario(result["scenario"], seed=result["world_seed"], adversarial=result["adversarial"])
     transport = RecordedN4Transport(result["calls"])
-    install_nereid_cognition(replay, transport=transport)
+    install_nereid_cognition(replay, transport=transport, contract_version=result.get("contract_version", 1))
     reviews = [advance_one_review(replay) for _ in result["reviews"]]
-    return (transport.index == len(result["calls"]) and state_evidence(replay) == result["final_state"]
+    # Player View contains Python tuples; JSON round-trips them as arrays.
+    # Compare the complete serialized state, not Python container identity.
+    return (transport.index == len(result["calls"])
+            and json.dumps(state_evidence(replay), sort_keys=True) == json.dumps(result["final_state"], sort_keys=True)
             and [r["invocation"] for r in reviews] == [r["invocation"] for r in result["reviews"]])
 
 
@@ -296,6 +301,7 @@ def summarize(results, *, used, fatal=None):
             "review_wall_seconds": sum(r["review_wall_seconds"] for _, r in reviews),
             "valid_action_counts": verbs, "valid_deferrals": deferrals,
             "all_recorded_replays_match": bool(results) and all(r["replay_matches"] for r in results),
+            "all_saved_replays_match": bool(results) and all(r.get("disk_replay_matches", False) for r in results),
             "structural_floor_pass": (fatal is None and len(results) == 18 and len(reviews) == 72
                 and bool(ordinary) and valid/len(ordinary) >= .90 and all(r["replay_matches"] for r in results)),
             "behavior_candidates_present": bool(verbs.get("shift_local_silt") and deferrals
@@ -336,16 +342,19 @@ def local_model_preflight():
     return {key: match.get(key) for key in ("name", "digest", "size")}
 
 
-def run_experiment(directory, *, provider_factory=None, progress=None, provider_metadata=None):
+def run_experiment(directory, *, provider_factory=None, progress=None, provider_metadata=None, contract_version=1):
     """Caller must authorize real mode; offline tests inject a provider explicitly."""
+    if type(contract_version) is not int or contract_version not in (1, 2):
+        raise ValueError("unknown Nereid action contract version")
     evidence = EvidenceBudget(directory)
     _write_json(evidence.root / "plan.json", {"model": DEFAULT_LOCAL_MODEL, "temperature": .15,
         "context": 8192, "max_output_tokens": 1200, "timeout_seconds": 180,
         "scenarios": SCENARIOS, "repetitions": 3, "reviews_per_run": 4, "call_limit": 72,
         "adversarial_run": "baseline_uncertainty_3", "world_seed": 42, "model_seeds": [42,43,44],
         "uses_injected_test_provider": provider_factory is not None, "provider_metadata": provider_metadata,
+        "contract_version": contract_version,
         "source_sha256": {name: sha256((Path(__file__).parent/name).read_bytes()).hexdigest()
-            for name in ("pilot_nereid.py", "pilot_nereid_neural.py", "neural.py", "project_runtime.py", "pilot.py")}})
+            for name in ("pilot_nereid.py", "pilot_nereid_contract_v2.py", "pilot_nereid_neural.py", "neural.py", "project_runtime.py", "pilot.py")}})
     results, fatal = [], None
     try:
         for scenario in SCENARIOS:
@@ -358,9 +367,10 @@ def run_experiment(directory, *, provider_factory=None, progress=None, provider_
                 _write_json(run_directory / "fixture_state.json", state_evidence(loop))
                 provider = provider_factory(42+repetition) if provider_factory else OllamaChatTransport(seed=42+repetition)
                 transport = AuditedTransport(provider, evidence, run_id=run_id,
-                    projection=NereidEvidenceProjection(loop.session), progress=progress)
-                install_nereid_cognition(loop, transport=transport)
+                    projection=NereidEvidenceProjection(loop.session), progress=progress, contract_version=contract_version)
+                install_nereid_cognition(loop, transport=transport, contract_version=contract_version)
                 result = {"run_id": run_id, "scenario": scenario, "world_seed": 42,
+                    "contract_version": contract_version,
                     "model_seed": 42+repetition, "adversarial": adversarial, "reviews": [], "calls": transport.records}
                 try:
                     for index in range(REVIEWS_PER_RUN):
@@ -382,6 +392,11 @@ def run_experiment(directory, *, provider_factory=None, progress=None, provider_
                     results.append(result)
                 if not result["replay_matches"]:
                     raise ExperimentStop("authoritative replay diverged")
+                saved = json.loads((run_directory / "result.json").read_text(encoding="utf-8"))
+                result["disk_replay_matches"] = replay_run(saved)
+                _write_json(run_directory / "disk_replay.json", {"matches": result["disk_replay_matches"]})
+                if not result["disk_replay_matches"]:
+                    raise ExperimentStop("saved authoritative replay diverged")
     except BaseException as exc:
         fatal = f"{type(exc).__name__}: {exc}"
         if progress:

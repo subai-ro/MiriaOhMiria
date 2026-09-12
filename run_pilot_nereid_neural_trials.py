@@ -1,4 +1,4 @@
-"""Run only the explicitly approved initial N4 local-model batch."""
+"""Run an explicitly approved N4 batch; every repeat needs separate approval."""
 import argparse
 import json
 from pathlib import Path
@@ -11,6 +11,8 @@ def main():
     parser.add_argument("--approved-local-experiment", action="store_true",
                         help="operator acknowledgement; never infer user approval from this flag")
     parser.add_argument("--output-dir", required=True, help="new directory under local_acceptance")
+    parser.add_argument("--contract-version", type=int, choices=(1, 2), required=True,
+                        help="1: historical contract; 2: separately approved corrected retry")
     args = parser.parse_args()
     if not args.approved_local_experiment:
         parser.error("explicit approval of the N4 plan is required before running a provider")
@@ -19,7 +21,8 @@ def main():
     if local not in output.parents:
         parser.error("output must be a new child directory under this repository's local_acceptance")
     metadata = local_model_preflight()
-    summary = run_experiment(output, progress=lambda line: print(line, flush=True), provider_metadata=metadata)
+    summary = run_experiment(output, progress=lambda line: print(line, flush=True),
+                             provider_metadata=metadata, contract_version=args.contract_version)
     print(json.dumps(summary, ensure_ascii=True, indent=2), flush=True)
     return 0 if summary["structural_floor_pass"] else 1
 

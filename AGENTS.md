@@ -11,6 +11,24 @@ The central invariant is:
 > The server may know the objective world. A subject may know only what reached
 > that subject through an allowed perceptual or informational path.
 
+## Repository recovery requirement
+
+Explicit user requirement (2026-09-06): the repository must be sufficient to
+recover all project work needed to continue. Chat history and assistant memory
+must never be the only record of a decision, result, constraint or next step.
+
+At each meaningful stop, synchronize current state, spec/acceptance and the
+active handoff with completed work, user feedback, exact acceptance boundaries,
+unfinished work and the next operation. Preserve the actual current plan in
+repository documents; a pointer to a chat or an ignored local file is not enough.
+Include exact commands, results, version/source identity and evidence locations.
+If reproduction depends on raw evidence, retain it in the repository or an
+explicitly documented durable archive with integrity hashes and retrieval steps.
+Do not call recovery complete for a fresh clone while required material exists
+only in ignored local_acceptance files, local chat storage or uncommitted work.
+Distinguish local documentation from committed and pushed state. This rule does
+not independently authorize committing, pushing or publishing private captures.
+
 ## Read before editing
 
 For every non-trivial task, read these files in order:
@@ -45,8 +63,27 @@ not describe the current executable version.
   all frozen gates green at that review. The user subsequently authorized N4's
   initial local batch; all 72 calls / 18 runs completed and NEURAL FAILED:
   6/68 ordinary decisions valid, 18/18 exact replays. The harness adds 13 tests
-  (220 total). Stop before correction/retry; no further provider approval,
-  model substitution or acceptance/freeze is implied. See acceptance E.1.
+  (220 total at that stage). The user subsequently approved the v2 action
+  interface correction and ONE retry of at most 72 local calls, unchanged model
+  parameters. The correction adds 20 tests (240 at that stage). The retry stopped at
+  call 16 on the unchanged 180-second provider timeout: 15 returned decisions
+  valid, seven resolved silt-work actions, four recorded histories replayed.
+  That experiment remains PARTIAL. The user then explicitly authorized one
+  fresh v2 batch: 72 calls / 18 histories completed, 64/68 ordinary decisions
+  valid (94.12%), four overlong-text rejects, 18/18 exact disk replays.
+  Structural/safety/replay criteria pass and minimum inquiry/work/reconsideration
+  examples are present, with quality reservations (spec 15 / acceptance E.4).
+  This is an experimental candidate, not user acceptance/freeze or HUMAN.
+  That result alone authorized no follow-up. On 2026-09-06 the user explicitly
+  approved a separate internal playable entry and ONE joint session (spec 16 /
+  acceptance F.1): max 24 calls including prehistory, unchanged v2/settings,
+  command/call evidence and post-session Creator report/replay. It adds 19
+  offline tests (259 current), all frozen gates green. The guided session ended
+  via quit at 17:16: 12 recorded commands, one prehistory model call, exact
+  replay. The user saw no Nereid activity; next review was due at 18:00.
+  The subsequent observable-life read-only audit is complete, implementation
+  not started. See acceptance F.2 and docs/handoffs/WORLD_ZERO_RECOVERY_2026_09_06.md.
+  No acceptance/freeze, HUMAN, cognition correction or additional N4 batch.
 
 Do not call any future candidate frozen, accepted, or released until the user
 explicitly accepts the required local gates.
@@ -116,7 +153,7 @@ Equivalent individual commands:
 
 Expected current offline results with frozen I1, accepted N0 and the N4 harness:
 
-- 220 unit tests, OK
+- 259 unit tests, OK
 - PersistentProject: 10/10 LAW
 - Hydrology: 19/19 LAW
 - Affordances + Local Perception: 26/26 LAW
@@ -127,7 +164,7 @@ accepted and frozen on 2026-08-15, when the complete suite contained 139 tests.
 The additional seven I0 tests account for its frozen total of 146. Frozen I1
 adds twelve tests, producing its frozen total of 158. N0 added eighteen
 scheduling tests (176 at acceptance). N1–N3 added 31 (207 at their review).
-The initial N4 experiment harness adds 13 offline tests, producing 220 now.
+The initial N4 harness added 13 (220); v2 added 20 (240); internal play adds 19 (259).
 
 D.2.3 is entirely offline. It requires no Ollama process, API key, or package
 installation.
@@ -141,7 +178,7 @@ On Windows PowerShell:
 
 Expected results:
 
-- 220 unit tests, OK in the current worktree; I0 froze at 146
+- 259 unit tests, OK in the current worktree; I0 froze at 146
 - Pilot I0: 13/13 LAW
 
 I0 is entirely offline. It requires no Ollama process, API key, network
@@ -157,7 +194,7 @@ On Windows PowerShell:
 
 Expected results:
 
-- 220 unit tests, OK; I1 froze at 158
+- 259 unit tests, OK; I1 froze at 158
 - frozen Pilot I0: 13/13 LAW
 - frozen Pilot I1: 21/21 LAW
 
@@ -171,7 +208,7 @@ I1 is entirely offline and uses only the Python standard library.
 
     py -m unittest discover -s tests -p test_pilot_n0.py -v
 
-Expected: 18 N0 tests, OK; then run the complete 220-test suite and all six
+Expected: 18 N0 tests, OK; then run the complete 259-test suite and all six
 frozen LAW gates above. The N0 result is a feasibility proof, not acceptance of
 the full I3-N contract, canonical cognition or the external pilot.
 
@@ -186,7 +223,7 @@ frozen I1 mode, and keep all N0 scheduling doubles inside tests.
     py run_pilot_nereid_trials.py --seed 42
 
 Expected: 31 tests (one named case per N01–N28 plus three extra boundaries),
-12/12 E2E checks; then all 220 tests and the frozen gates. Lab policies belong
+12/12 E2E checks; then all 259 tests and the frozen gates. Lab policies belong
 only in tests or the explicitly labelled acceptance runner, never a playable
 entry-point registry. The opt-in factory requires an explicit transport.
 Creator HTML is post-session, not an external visual Player View/HUMAN pass.
@@ -194,15 +231,29 @@ Creator HTML is post-session, not an external visual Player View/HUMAN pass.
 ## Pilot I3-N / N4 harness verification
 
     py -m unittest discover -s tests -p test_pilot_nereid_neural.py -v
+    py -m unittest discover -s tests -p test_pilot_nereid_contract_v2.py -v
 
-Expected: 13 offline tests; then the complete suite and frozen gates above.
+Expected: 13 harness and 20 v2 offline tests; then the full suite/frozen gates.
 They use labelled doubles and never need a running provider. The initial real
 N4 batch is complete and failed (72 calls; 6/68 ordinary reviews valid). Its
 local artifact directory must not be reused or overwritten. Do not repeat the
-real runner merely to verify a checkout or transfer. Correction and a retry
-experiment need separate approval; see spec 12 and acceptance E.1.
+real runner merely to verify a checkout or transfer. The approved v2 retry has
+stopped on its sixteenth call; preserve that partial result too. The separately
+approved fresh batch then completed (72 calls, 64/68 ordinary valid, 18/18
+replays). Preserve all three series. No new run follows automatically from
+the passing structural floor; every further batch needs explicit approval.
 
 ## Neural work
+
+Internal session verification: `py -m unittest discover -s tests -p test_pilot_nereid_playtest.py -q`
+(19 offline tests), then the complete suite/frozen gates. `play_pilot_nereid.py`
+requires explicit local-session approval and a new local_acceptance directory.
+Do not restart an ended session, replace the mind or expose private diagnostics
+in Player View. The first guided session authorized by spec 16 has ended;
+do not restart it. Its completed result and negative player-visibility review
+are in acceptance F.2. The next unfinished step is the observable-life
+design/acceptance contract described in docs/handoffs/WORLD_ZERO_RECOVERY_2026_09_06.md.
+Its status is not accepted/frozen until the user explicitly makes that decision.
 
 The frozen local neural baseline is Ollama ministral-3:8b, temperature 0.15,
 context 8192. Offline neural tests use doubles and must not call a provider.

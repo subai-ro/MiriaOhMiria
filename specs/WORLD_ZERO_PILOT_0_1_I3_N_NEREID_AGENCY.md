@@ -5,8 +5,18 @@
 **Status:** N0 explicitly user-accepted on 2026-09-05 (not declared frozen).
 N1–N3 implemented and builder-verified as one offline review candidate;
 N4's explicitly authorized initial local-model experiment completed and FAILED
-on 2026-09-05 (6/68 valid ordinary reviews). No retry is approved. HUMAN and
-acceptance/freeze remain separately gated.
+on 2026-09-05 (6/68 valid ordinary reviews). The user subsequently approved the
+v2 interface correction and ONE retry of at most 72 local calls (section 13).
+The retry stopped at call 16 on the unchanged provider timeout (section 14).
+It remains PARTIAL. A separately approved fresh v2 run then completed all 72
+calls: 64/68 ordinary valid, 18/18 saved replays (section 15 / acceptance E.4).
+Structural/safety/replay criteria pass; minimum behavioral examples are present
+with quality reservations. Experimental candidate only; HUMAN and user
+acceptance/freeze remain gated.
+
+On 2026-09-06 the user separately approved the internal interactive seam and
+one guided session (section 16). It is builder-verified with 259 offline tests;
+the first session is at the opening prompt, not a completed guided/HUMAN pass.
 
 **Baseline:** frozen D.1.4.2, D.2.0–D.2.3, Pilot I0 and I1
 
@@ -503,3 +513,230 @@ The harness adds 13 offline tests: 220 total, N1–N3 E2E 12/12 and all six froz
 LAW gates pass. A subsequent correction and at most one new 72-call batch need
 separate approval. The initial evidence and failed status remain preserved;
 N0 remains accepted but not frozen, N1–N3 remain an offline candidate.
+
+## 13. Authorized v2 correction and single retry — 2026-09-05
+
+The user explicitly approved the action-interface correction and one further
+72-call local batch. No second retry, model change, new gameplay mechanism,
+commit/push or milestone acceptance is implied. Use a new directory:
+`local_acceptance/pilot_nereid_n4_2026-09-05_retry_v2/`.
+
+The correction is versioned `nereid.actions.v2`. Existing v1 functions/defaults
+remain available for historical offline trials and exact initial-series replay;
+the retry explicitly selects `contract_version=2`. Future canonical entry
+points must select the evaluated version explicitly, never a lab policy.
+
+- Inspection/sensing model actions have only `verb`, `target`, `evidence_refs`.
+  They do not contain `effort`, not even zero. Work additionally requires a
+  finite effort fraction in (0,1], stated in ordinary text and the schema.
+- The trusted adapter converts a valid v2 inspection to the existing internal
+  zero sentinel. It rejects unexpected model fields before conversion: it does
+  not strip an invalid effort value, clamp work or change a recorded output.
+- Existing physical durations, costs, faculties, observations and outcomes are
+  unchanged. No attention/fatigue or variable-quality inspection is introduced.
+- A per-verb/target catalog is derived only from delivered self locality,
+  faculties/capabilities, the already-known gate and owned local percepts.
+  It distinguishes generally citable memories/intents from action-eligible
+  target percepts. Work without a delivered percept has no valid schema branch;
+  deferral and other lawful inquiry remain possible. The catalog does not read
+  objective Hydrology or hide work based on resource/physical success: the
+  existing resolver can still block a structurally valid attempt.
+- Schema and catalog are rebuilt after optional-history trimming. No omitted,
+  foreign or fabricated ref can become citable through a catalog entry. V2
+  omits the unused inspection sentinel from model-facing own-intent memory.
+- Exact request/prompt/schema envelopes are compared by the trusted audit
+  before reserving a call. Both in-memory and disk-loaded records are replayed.
+
+One offline test exposed a pre-existing replay comparison defect: Python tuples
+in Player View become JSON arrays. Comparison now uses complete serialized
+values; no world value is ignored or changed. All 18 saved initial histories
+replay exactly with v1. Their 327 artifact files are retained untouched.
+
+The experiment keeps section 11's six fixtures, three histories, four scheduled
+reviews, world seed 42, model seeds 42/43/44, adversarial baseline repetition 3,
+and predeclared denominator of 68 ordinary calls. Provider: the same local
+ministral-3:8b digest `1922accd5827ebe6829e536369195db25eaf664528dc66206d646ea3bb386b71`,
+temperature 0.15, context 8192, output 1200, timeout 180 seconds. No pre-run
+generation, coaching sequence, immediate repair retry or selected rerun.
+
+Thresholds remain unchanged: >=90% ordinary valid decisions, zero detected
+escapes/leaks, exact replay, plus full-batch review for self-directed inquiry,
+at least one bounded material attempt and coherent deferral or reconsideration.
+The automatic behavior-candidate count is only a conservative signal (it counts
+explicit deferral); manual review remains necessary and may reject repetitive
+or ungrounded behavior even when syntax passes. HUMAN is not inferred.
+
+Pre-provider offline proof: 20 new v2 cases, 240 total tests, all six frozen LAW
+gates, and the existing 12/12 E2E checks pass. The new tests also send all twelve
+E2E checks through v2 with labelled doubles, preserving the settled visible
+difference, action costs and causal chain. The batch stops on provider/storage/
+budget/authoritative failure as before. After completion, stop for user review
+regardless of success; do not begin a playable entry point or another batch.
+
+## 14. V2 retry outcome and review stop
+
+The one approved retry used the unchanged model/settings and stopped on call
+16 after 180 seconds without a response. Three complete baseline histories and
+one interrupted new-gate-percept history were saved. All 15 returned decisions
+were valid, including the four predeclared adversarial reviews. Seven bounded
+silt-work actions actually removed debris through the existing resolver; the
+gate stayed closed and the Project active. Nothing granted an automatic result
+percept, objective knowledge, homecoming or story outcome.
+
+This is PARTIAL, not a pass of the 72-call protocol or its 68 ordinary reviews.
+The observed ordinary fraction is 11/12 including the timeout; four of the six
+situation types were never reached. The remaining samples must not be inferred
+from a passing percentage on the early subset. All four recorded histories,
+including the timeout, replay exactly from disk without calling a provider.
+The initial 327 files and retry source-manifest hashes remain unchanged.
+
+Full review of the 15 returned choices found an inquiry-to-work sequence, but
+also repeated work referencing the same earlier gate percept, sometimes with
+prose promising reassessment rather than an actual subsequent inspection.
+There was no explicit deferral and no post-work observation in the recorded
+choices. These do not establish the complete reconsideration/learning gate.
+No invalid-output escape or clock/Ledger listener failure was detected; the
+interrupted Project records its provider failure and invents no action.
+
+Median call latency was 86.699 s, p95 180.002 s. A read-only snapshot showed
+concurrent Call of Duty and model processes with the GPU at 99% utilization
+and 11248/12227 MiB occupied. Resource contention is a plausible contributor,
+not an isolated diagnosis or proof that the service crashed. No application
+was closed and no timeout/model setting was changed. The actual command,
+evidence paths, replay-summary caveat and review are in acceptance E.3.
+
+Stop here for user review. Any controlled local-service investigation leading
+to another generation batch requires a new explicit experiment/approval; do
+not treat the remaining call allowance as permission to resume. No playable
+Nereid entry point, canonical cognition, HUMAN pass or freeze is declared.
+
+## 15. Separately authorized fresh v2 run — 2026-09-05
+
+After reviewing the provider-stopped retry, the user explicitly requested a
+new run. This authorizes ONE fresh batch, not resuming/replacing E.3, changing
+the contract or model, or accepting/freezing the checkpoint. New output:
+`local_acceptance/pilot_nereid_n4_2026-09-05_rerun_v2/`.
+
+Reuse sections 11 and 13 unchanged: contract v2; the same six scenarios, three
+fresh histories each, four scheduled reviews each, at most 72 calls; world seed
+42, model seeds 42/43/44; four adversarial baseline-repetition-3 calls excluded
+only from the fixed 68 ordinary-review denominator. Local ministral-3:8b,
+unchanged digest, temperature 0.15, context 8192, output 1200, timeout 180 s.
+No warm-up generation, extra retry, fallback action, changed prompt/schema,
+forced outcome or automatic continuation after a provider failure.
+
+Preflight: model inventory/digest match; GPU snapshot 6% utilization,
+1379/12227 MiB occupied, no Call of Duty process found. This is a snapshot,
+not a controlled attribution of the earlier slowdown. No process was stopped
+or service setting changed. All 240 offline tests pass; SHA256 captured for
+all 404 files across the initial and partial batches. Preserve both batches
+and score this run independently. Review all returned decisions and exact
+replay after the run; passing syntax alone does not establish cognition or
+HUMAN quality. Stop for user review after this single new result.
+
+Recorded outcome: all 72 calls and 18 histories completed, no provider timeout.
+64/68 ordinary decisions valid (94.12%); all four adversarial reviews valid;
+four strategy texts above 400 characters were rejected without resolution.
+All 18 saved histories replay exactly. There were 19 successful bounded silt
+removals, six resource-blocked work intents and one explicit deferral.
+All gates remain closed and Nereid Projects active. No story outcome, new
+observation or objective knowledge was manufactured by an intent.
+
+Manual review of all 72 choices found the minimal inquiry/work/reconsideration
+examples, not merely differing action counts. Five histories include a lawful
+post-work inspection. In `new_gate_percept_3`, work at 405–585 is followed by
+an inspection ending at 1530 that sees light rather than moderate debris;
+further work at 2565–2745 is followed by another inspection at 3565–3610.
+These are Nereid's private observations, not Arra's or a HUMAN pass.
+
+Remaining quality concerns: repeated work from stale evidence, incorrect
+speculation about native-water connectivity, failure to consistently respect
+known zero resources, and prose promising sensing/inspection while choosing
+another action or describing silt moving toward rather than away from the gate.
+The bounded resolver remains authoritative. The one null action does not on
+its own demonstrate thoughtful deferral; actual inspect-before-further-work
+sequences provide the stronger reconsideration evidence. No answer key or
+prescribed ending was added to improve the score.
+
+Median call latency 3.492 s, p95 4.866 s; total review time 264.634 s. The
+earlier 404 artifacts and all six source hashes remain intact. All 240 offline
+tests and all frozen gates pass. Structural/safety/replay PASS and minimum
+behavioral evidence make this an experimental candidate for user review, not
+acceptance/freeze, robust canonical cognition or external playability.
+No further provider batch, code correction or playable entry is authorized.
+
+## 16. Authorized internal interactive seam — 2026-09-06
+
+The user explicitly approved connecting the evaluated Nereid to an internal
+game session and a joint check. This supersedes the previous implementation
+stop only for this seam and ONE guided session, not acceptance/freeze or a
+new N4 batch. `play_pilot_nereid.py` is a separate entry; frozen I1 is unchanged.
+
+Reuse PilotLoop commands and ownership-filtered Player View, the serial
+PilotSession, v2 NereidMind and existing resolvers. Preserve world/model seeds
+42, ordinary 720-minute autonomous prehistory and no authored gate percept.
+No dialogue, Arra water faculty, coached mind, physical law or ending is added.
+The existing Death brain remains I1's bounded policy, not a new neural Death.
+
+The first guided session permits at most 24 local calls including prehistory,
+128 commands and existing waits of at most 360 minutes. Use ministral-3:8b,
+the E.4 digest, temperature .15, context 8192, output 1200 and timeout 180 s.
+The CLI checks approval, a new local_acceptance directory and the model digest
+before creating a provider. No warm-up generation, fallback or new session.
+World time advances only through existing actions/waits, not while typing;
+this bounded test process is not a persistent background world service.
+
+`worldzero/pilot_nereid_playtest.py` adds composition and evidence only. A
+review guard delegates to the unchanged mind. Invalid output still reaches the
+existing scheduled cooldown; provider/storage/authoritative failure or budget
+exhaustion terminates the experiment instead of manufacturing a null intent.
+A dedicated termination signal bypasses ProjectRuntime's recoverable-error
+handler. Already completed commits/time are retained and recorded as partial
+when an operation is interrupted; no world rollback or invented completion.
+
+Reuse AuditedTransport's reservation-before-call and exact captures. Save
+player-command reservations before dispatch, operation checkpoints and a final
+session result in a fresh directory. These are Creator-only diagnostic records,
+not a second world Ledger or subjective memory store. Reproduce saved commands
+and exact recorded responses offline; compare complete final state, invocations
+and operation records. Report a failed/incomplete replay honestly for host-side
+interruptions/storage failures that recorded responses cannot reconstruct.
+Escaped Creator HTML is generated only after close from existing forensic data.
+The console shows only Player View, own action messages, elapsed time and neutral
+busy/session notices; no private review timing, identity or model rationale.
+
+Offline builder proof: 19 new tests, 259 total; all frozen gates and N1–N3 E2E
+green. Tests cover work/quiet settled observations, ownership/locality, replay
+tampering, limits, invalid output cooldown, provider/storage/clock failure,
+CLI approval/digest, quit, EOF and interruption. Doubles remain inside tests.
+One guided session is authorized at
+`local_acceptance/pilot_nereid_playtest_2026-09-06_01/`.
+Stop at the first prompt for user actions; do not choose a demonstration ending.
+Historical opening boundary only; the authorized session has since ended.
+See section 17 and acceptance F.2 for the completed result. HUMAN remains open.
+
+## 17. Completed guided session and recovered continuation — 2026-09-06
+
+The spec-16 session ended through quit at minute 1036 (Day 1, 17:16).
+Twelve commands were recorded after prehistory. One real model call at minute
+360 selected water inspection, resolved at 390 with one Nereid-owned percept
+and no material change. Next review was scheduled for 1080 (18:00), after the
+player left. There was no Nereid action during player input.
+The user reported no visible Nereid activity; this matches the saved evidence.
+Exact offline replay passes, but the session does not demonstrate a player-
+visible autonomous consequence or pass product/HUMAN acceptance.
+
+The subsequent read-only audit was completed in the previous chat. Its
+proposal, "Observable life: river gate", combines lawful ordinary observation
+of completed external effects, bounded material responses available to Arra,
+and a separately versioned 1–3-hour review-interval hypothesis. These are
+proposed changes, not the current v2 contract. A private water inspection does
+not acquire a fabricated visible effect, and no hidden actor/motive becomes
+player knowledge. Preserve frozen I1 and historical evidence.
+
+The next unfinished operation is a concrete design/acceptance contract before
+implementation; a new real-model experiment requires its own bounded plan.
+Both guided tests, source messages, negative feedback and the recovered scope
+are preserved in `docs/handoffs/WORLD_ZERO_RECOVERY_2026_09_06.md`.
+This recovery changes documentation only, not runtime, model settings or status
+into acceptance/freeze.

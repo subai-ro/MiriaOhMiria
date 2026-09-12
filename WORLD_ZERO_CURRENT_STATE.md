@@ -1,8 +1,8 @@
 # World Zero current state
 
-**Snapshot date:** 2026-09-05
+**Snapshot date:** 2026-09-08
 **Frozen executable baseline:** V0.0-D.2.3 plus Pilot 0.1 I0-I1
-**Active construction:** Pilot I3-N offline candidate; initial N4 experiment failed; awaiting correction/retry approval
+**Active construction:** Pilot I3-N guided session completed via quit; exact replay verified, but no Nereid activity visible to the player. Observable-life audit completed; next design/acceptance contract not yet written (259-test implementation unchanged).
 **Release status:** D.2.3, Pilot I0 and Pilot I1 frozen
 **Runtime dependencies:** Python 3.10+ standard library only
 
@@ -19,7 +19,9 @@
 | Pilot 0.1 I1 | Internal playable loop | 158 tests; 21/21 I1 LAW; all frozen regressions green | accepted and frozen (2026-09-05) |
 | Pilot I3-N / N0 | Serial action/clock integration spike | 18 new tests; 176 total; all frozen regressions green | user-accepted (2026-09-05); not declared frozen |
 | Pilot I3-N / N1–N3 | Owned cognition boundary -> physical attempt -> settled observation/replay | 31 new tests; 207 total at this stage; N01–N28 covered; 12/12 E2E; all frozen gates green | offline candidate; no acceptance/freeze |
-| Pilot I3-N / N4 initial | Authorized real local-model experiment | 72 calls / 18 runs; 6/68 ordinary decisions valid; 18/18 replays; 13 new harness tests, 220 total | NEURAL failed (2026-09-05); retry not approved; HUMAN not run |
+| Pilot I3-N / N4 initial | Authorized real local-model experiment | 72 calls / 18 runs; 6/68 ordinary decisions valid; 18/18 replays; 13 new harness tests, 220 total at that stage | NEURAL failed (2026-09-05); original evidence preserved |
+| Pilot I3-N / N4 v2 | Action-interface correction and one approved retry | 20 new tests; 240 total; all frozen gates and v2 E2E green; 15 returned decisions valid, seven resolved work actions, call 16 timed out; 4/4 saved replays | PARTIAL; no NEURAL, acceptance/freeze or HUMAN pass; the next run required separate approval |
+| Pilot I3-N / N4 v2 fresh | Separately approved complete rerun, unchanged code/settings | 72 calls / 18 histories; 64/68 ordinary valid (94.12%); 19 successful and six blocked work attempts; 18/18 saved replays; 240 offline tests and all frozen gates green | experimental candidate: structural/safety/replay pass, minimum behavioral examples present with reservations; no user acceptance/freeze or HUMAN |
 
 The D.2.3 builder and user-local gates reproduced:
 
@@ -64,6 +66,23 @@ must preserve its causal, Player View and acceptance boundaries.
 
 ## Implemented causal stack
 
+On 2026-09-06 the user approved the next separate internal playable entry and
+one joint session, not acceptance/freeze. `play_pilot_nereid.py` connects the
+unchanged v2 cognition to I1 commands via `worldzero/pilot_nereid_playtest.py`.
+It reserves calls and commands, saves checkpoints, stops on failure or limits
+and exports a separate post-session Creator report plus offline replay.
+19 new tests bring the current suite to 259; all six frozen gates and 12/12
+N1–N3 E2E pass. The first session completed via quit at minute 1036 (17:16),
+after 12 recorded commands and one model call during prehistory. Nereid only
+inspected water at 360–390; her next review at 1080 was never reached. The user
+reported no visible Nereid activity, consistent with the evidence. Exact saved
+replay passes; this is not a product/HUMAN pass or acceptance/freeze.
+The subsequent read-only observable-life audit is complete; implementation
+has not begun. See acceptance F.2 and
+`docs/handoffs/WORLD_ZERO_RECOVERY_2026_09_06.md` for both guided tests,
+recovered user feedback, the proposed scope and the next unfinished operation.
+The historical N4 results below are retained unchanged.
+
 | Layer | Main implementation | Responsibility |
 | --- | --- | --- |
 | Objective world | worldzero/models.py, engine.py, ledger.py | world state, actions, immutable event history |
@@ -78,6 +97,7 @@ must preserve its causal, Player View and acceptance boundaries.
 | Pilot composition | worldzero/pilot.py | one-session composition, authoritative-clock facade and bounded Death inquiry |
 | Internal Player View | worldzero/pilot_playable.py | safe view projection, local navigation and terminal playable loop |
 | Opt-in Nereid composition | worldzero/pilot_nereid.py | owned Project/view projection, structured cognition adapter and existing physical gateways; explicit transport only |
+| Versioned Nereid action interface | worldzero/pilot_nereid_contract_v2.py | owned-view-derived action schema, no model-facing inspection effort, unchanged physical resolver; v1 retained for historical replay |
 | Post-session Creator projection | worldzero/pilot_nereid_creator.py | graph/report derived from existing traces and Ledger; no parallel world event store |
 | N4 experiment harness | worldzero/pilot_nereid_neural.py | bounded approved local batch, exact response evidence and provider-free replay; not a playable brain |
 
@@ -191,6 +211,15 @@ D.2.0 label. Treat it as cosmetic technical debt, not current checkpoint truth.
 
 ## Next construction boundary
 
+Current next step after the completed guided session and read-only audit:
+write the design/acceptance contract for "Observable life: river gate".
+The recovered proposal combines lawful ordinary observation of external
+consequences, bounded physical player responses and a separately versioned
+pacing hypothesis. It is not implemented; no new provider session is implied.
+Details and original-source pointers are in
+`docs/handoffs/WORLD_ZERO_RECOVERY_2026_09_06.md`. The following paragraphs
+preserve the prior N0–N4 construction and experimental history.
+
 The user accepted **Pilot I3-N/N0** on 2026-09-05; no freeze was declared.
 N1–N3 reached the substantial offline review point; they are not accepted/frozen.
 The user then authorized the initial N4 local experiment. It completed and
@@ -232,16 +261,50 @@ parameters. Only 6/68 non-adversarial outputs were valid (8.82%, below 90%):
 six water inspections and no valid material work. Rejections were 53 effort,
 nine target and four evidence-reference failures; all 18 replays match and no
 invalid-output escape or authoritative clock/Ledger listener error was detected.
-The model-facing schema did not state inspection's zero-effort rule or clearly
-map action targets and eligible refs. Clarifying that interface is proposed,
-not implemented or approved, and does not guarantee a neural pass.
+The initial model-facing schema did not state inspection's zero-effort rule or
+clearly map action targets and eligible refs. That diagnosis led to the later
+approved v2 interface correction; the original failure is not re-scored.
 
-All 220 current offline tests (13 new experiment-harness tests), 12/12 E2E and
-all six frozen gates pass. Median model latency was 1.825 s, p95 2.442 s; this
+At the initial review, all 220 offline tests (13 new experiment-harness tests),
+12/12 E2E and all six frozen gates passed. Median model latency was 1.825 s, p95 2.442 s; this
 is not a HUMAN or playability pass. The full result is acceptance section E.1;
 raw local evidence remains in `local_acceptance/pilot_nereid_n4_2026-09-05_initial/`.
-Stop before correction or any repeat provider batch; separate approval is
-required. A later approved retry may use at most one new 72-call batch.
+The user subsequently approved the v2 correction and ONE new 72-call batch.
+The correction is offline-verified (240 tests; all frozen gates; twelve E2E
+checks also run through v2). The retry stopped at call 16 on the unchanged
+180-second provider timeout. All 15 received decisions were valid; seven silt
+actions actually removed bounded debris. Three baseline histories and one new-
+gate-percept history were recorded; all four saved histories replay exactly.
+The partial ordinary denominator is 11/12 including the timeout, not a pass of
+the declared 68-review gate. Median call latency was 86.699 s, p95 180.002 s.
+Concurrent game/model GPU load was observed, but its causal contribution is
+not isolated. No process was stopped or model/timeout setting changed.
+See spec 14 / acceptance E.3 and
+`local_acceptance/pilot_nereid_n4_2026-09-05_retry_v2/`.
+There is preliminary inquiry-to-work evidence, but repeated work with no later
+observation, no explicit deferral and four untested situation types prevent a
+full cognition judgment. The initial 327 artifacts remain byte-for-byte intact.
+At that point work stopped for user review, preserving the partial result.
+
+The user then explicitly authorized ONE fresh v2 run. It completed all 72 calls
+and 18 histories on unchanged source/settings: 64/68 ordinary decisions valid
+(94.12%), plus all four adversarial choices valid. Four overlong strategy
+texts were rejected without resolution; they remain failures in the score.
+There were 25 bounded work intents: 19 removed debris and six were blocked
+by zero resources. All 18 saved histories replay exactly, all gates stay closed
+and all Nereid Projects remain active. Five histories include a later lawful
+inspection after successful work. Minimum inquiry/work/reconsideration examples
+are present; this is not a claim of consistently good reasoning or pacing.
+Resource awareness, stale-evidence speculation and prose/action mismatch remain
+quality concerns. The one explicit deferral is not by itself proof of quality.
+Median call latency was 3.492 s, p95 4.866 s, total review time 264.634 s.
+No timeout occurred. Earlier artifacts (404 files) and all six source hashes
+remain unchanged. See spec 15 / acceptance E.4 and
+`local_acceptance/pilot_nereid_n4_2026-09-05_rerun_v2/`.
+Status is experimental candidate awaiting review, not user acceptance/freeze,
+canonical character quality, settled Arra-visible proof or HUMAN. At that N4
+stop, neither another batch nor a playable entry was implied. The later explicit
+2026-09-06 approval covers the separate internal entry/session described above.
 The original six-day seed remains unchanged; only the new opt-in composition
 may author an earlier first review before autonomous prehistory.
 
@@ -249,7 +312,7 @@ may author an earlier first review before autonomous prehistory.
 - Planned gates and refreshed baseline: `acceptance/PILOT_0_1_I3_N_ACCEPTANCE.md`
 
 The earlier 2026-09-05 design pass reproduced the then-current 158 tests; N0
-added 18, N1–N3 added 31 and the N4 harness added 13. No frozen acceptance
+added 18, N1–N3 added 31, the N4 harness added 13 and v2 added 20. No frozen acceptance
 evidence was overwritten. The external pilot
 still requires a minimal visual Player View; terminal remains an internal
 harness. Real-model trials remain separately gated and require approval of

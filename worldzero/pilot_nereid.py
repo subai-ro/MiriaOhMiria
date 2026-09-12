@@ -238,11 +238,25 @@ class NereidInvocation:
     request_envelope_json: str | None = None
 
 
+def prepare_nereid_request(snapshot, *, contract_version=1):
+    if type(contract_version) is not int or contract_version not in (1, 2):
+        raise ValueError("unknown Nereid action contract version")
+    if contract_version == 2:
+        from .pilot_nereid_contract_v2 import prepare_request_v2
+        return prepare_request_v2(snapshot)
+    delivered = bounded_snapshot(snapshot)
+    return (NeuralModelRequest(DEFAULT_LOCAL_MODEL, SYSTEM_PROMPT, delivered.payload,
+                              decision_schema(), None, MAX_OUTPUT_TOKENS), delivered)
+
+
 class NereidMind:
     """Cognition boundary has neither a Project object nor a server/store handle."""
 
-    def __init__(self, transport: NeuralTransport):
+    def __init__(self, transport: NeuralTransport, *, contract_version=1):
+        if type(contract_version) is not int or contract_version not in (1, 2):
+            raise ValueError("unknown Nereid action contract version")
         self.transport = transport
+        self.contract_version = contract_version
         self._invocations: list[NereidInvocation] = []
 
     @property
@@ -253,16 +267,17 @@ class NereidMind:
         request_json = response_json = error = envelope_json = None
         minute = snapshot.payload["self"]["game_minute"]
         try:
-            delivered = bounded_snapshot(snapshot)
+            request, delivered = prepare_nereid_request(snapshot, contract_version=self.contract_version)
             request_json = delivered.payload_json
-            request = NeuralModelRequest(DEFAULT_LOCAL_MODEL, SYSTEM_PROMPT, delivered.payload,
-                                         decision_schema(), None, MAX_OUTPUT_TOKENS)
             envelope_json = _json(asdict(request))
             response = self.transport.complete(request)
             # Retain invalid numeric output in diagnostic JSON as well.
             response_json = json.dumps(response.output, ensure_ascii=False, sort_keys=True)
             if response.finish_reason in ("length", "max_tokens"):
                 raise NeuralResponseError("incomplete Nereid response")
+            if self.contract_version == 2:
+                from .pilot_nereid_contract_v2 import parse_decision_v2
+                return parse_decision_v2(response.output, delivered)
             return parse_decision(response.output, delivered)
         except Exception as exc:
             error = f"{type(exc).__name__}: {exc}"
@@ -316,7 +331,7 @@ class NereidIntentResolver:
 
 
 def create_pilot_nereid_loop(*, transport: NeuralTransport, seed: int = 42,
-                             prehistory_minutes: int = 720) -> PilotLoop:
+                             prehistory_minutes: int = 720, contract_version=1) -> PilotLoop:
     """Explicit transport required. Construction never silently creates a provider or double."""
     if transport is None:
         raise ValueError("explicit approved transport or labelled offline test double required")
@@ -324,7 +339,7 @@ def create_pilot_nereid_loop(*, transport: NeuralTransport, seed: int = 42,
         raise ValueError("prehistory must be non-negative integer minutes")
     loop = create_pilot_i1_loop(seed=seed, prehistory_minutes=0, serial_actions=True)
     session = loop.session
-    install_nereid_cognition(loop, transport=transport)
+    install_nereid_cognition(loop, transport=transport, contract_version=contract_version)
     if prehistory_minutes:
         session.advance(prehistory_minutes)
     # Diagnostics belong to this opt-in wrapper, not Player View or world state.
@@ -332,14 +347,14 @@ def create_pilot_nereid_loop(*, transport: NeuralTransport, seed: int = 42,
     return loop
 
 
-def install_nereid_cognition(loop: PilotLoop, *, transport: NeuralTransport) -> NereidMind:
+def install_nereid_cognition(loop: PilotLoop, *, transport: NeuralTransport, contract_version=1) -> NereidMind:
     """Same opt-in composition after authored setup; no new clock or seed rewrite."""
     if transport is None or not loop.session.clock.serial_actions:
         raise ValueError("explicit transport and serial PilotSession required")
     if hasattr(loop, "nereid_mind"):
         raise ValueError("Nereid cognition is already installed")
     session = loop.session
-    projection, mind = NereidEvidenceProjection(session), NereidMind(transport)
+    projection, mind = NereidEvidenceProjection(session), NereidMind(transport, contract_version=contract_version)
     project = session.projects.get(NEREID_PROJECT)
     session.projects.reconsider(NEREID_PROJECT, game_minute=session.world.game_minute,
         current_strategy=project.current_strategy, next_review_minute=session.world.game_minute+360)

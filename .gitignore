@@ -17,3 +17,6 @@ local_acceptance/
 *.bak
 .DS_Store
 Thumbs.db
+# World Zero local build artifacts
+/build/pyinstaller/
+/dist/
